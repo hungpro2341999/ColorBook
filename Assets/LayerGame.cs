@@ -76,7 +76,7 @@ public class LayerGame : MonoBehaviour
 			Debug.Log(perX + "  " + perY);
 			
 
-			TextureExtension.FloodFillBorder((Texture2D)material.mainTexture, (int)(perX * width), (int)(perY * height), color, new Color(0, 0, 0, 1));
+		//	TextureExtension.FloodFillBorder((Texture2D)material.mainTexture, (int)(perX * width), (int)(perY * height), color, new Color(0, 0, 0, 1));
 			((Texture2D)material.mainTexture).Apply();
 		}
 

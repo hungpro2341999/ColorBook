@@ -46,10 +46,7 @@ namespace PaintCraft.Demo.ColoringBook{
     	    }
 
             
-    	    if (Page is ColoringPageConfig)
-    	    {
-                transform.GetChild(0).GetComponent<Image>().sprite = (Page as ColoringPageConfig).Icon;                
-    	    }            
+    	   
         }
 
         void OnButtonClick()

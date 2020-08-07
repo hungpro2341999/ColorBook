@@ -65,11 +65,12 @@ public static class TextureExtension
         aTex.SetPixels(colors);
     }
 
-    public static void FloodFillBorder(this Texture2D aTex, int aX, int aY, Color aFillColor, Color aBorderColor)
+    public static void FloodFillBorder(this Texture2D targetTexture,Color[] aTex, int aX, int aY, Color aFillColor, Color aBorderColor)
     {
-        int w = aTex.width;
-        int h = aTex.height;
-        Color[] colors = aTex.GetPixels();
+        int w = targetTexture.width;
+        int h = targetTexture.height;
+        Color[] colors = targetTexture.GetPixels();
+        Color[] colorsBorder = aTex;
         byte[] checkedPixels = new byte[colors.Length];
         Color refCol = aBorderColor;
         Queue<Point> nodes = new Queue<Point>();
@@ -80,41 +81,42 @@ public static class TextureExtension
 
             for (int i = current.x; i < w; i++)
             {
-                if (checkedPixels[i + current.y * w] > 0 || colors[i + current.y * w] == refCol)
+                if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
                     break;
-                
+
                 colors[i + current.y * w] = aFillColor;
                 checkedPixels[i + current.y * w] = 1;
                 if (current.y + 1 < h)
                 {
-                    if (checkedPixels[i + current.y * w + w] == 0 && colors[i + current.y * w + w] != refCol)
+                    if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
                         nodes.Enqueue(new Point(i, current.y + 1));
                 }
                 if (current.y - 1 >= 0)
                 {
-                    if (checkedPixels[i + current.y * w - w] == 0 && colors[i + current.y * w - w] != refCol)
+                    if (checkedPixels[i + current.y * w - w] == 0 && colorsBorder[i + current.y * w - w] != refCol)
                         nodes.Enqueue(new Point(i, current.y - 1));
                 }
             }
             for (int i = current.x - 1; i >= 0; i--)
             {
-                if (checkedPixels[i + current.y * w] > 0 || colors[i + current.y * w] == refCol)
+                if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
                     break;
                 colors[i + current.y * w] = aFillColor;
                 checkedPixels[i + current.y * w] = 1;
                 if (current.y + 1 < h)
                 {
-                    if (checkedPixels[i + current.y * w + w] == 0 && colors[i + current.y * w + w] != refCol)
+                    if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
                         nodes.Enqueue(new Point(i, current.y + 1));
                 }
                 if (current.y - 1 >= 0)
                 {
-                    if (checkedPixels[i + current.y * w - w] == 0 && colors[i + current.y * w - w] != refCol)
+                    if (checkedPixels[i + current.y * w - w] == 0 && colorsBorder[i + current.y * w - w] != refCol)
                         nodes.Enqueue(new Point(i, current.y - 1));
                 }
+                
             }
         }
-        aTex.SetPixels(colors);
+         targetTexture.SetPixels(colors);
     }
 
 

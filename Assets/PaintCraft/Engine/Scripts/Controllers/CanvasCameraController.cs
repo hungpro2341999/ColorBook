@@ -47,7 +47,7 @@ namespace PaintCraft.Controllers
 
 
 			Camera.orthographic = true;
-			Camera.clearFlags = CameraClearFlags.Color;
+		//	Camera.clearFlags = CameraClearFlags.Color;
 			Camera.backgroundColor = Color.black;
 			Camera.orthographicSize =  (float)canvas.Height / 2.0f;
 			Camera.aspect = (float)canvas.Width / (float)canvas.Height;
