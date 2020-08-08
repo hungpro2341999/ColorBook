@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEditor;
+
 public class PaintingLayer : MonoBehaviour
 {
 
@@ -13,16 +15,16 @@ public class PaintingLayer : MonoBehaviour
 	public CtrlPainting SourcePainting;
 	public float width;
 	public float height;
-	
-	
+
+
 	Texture2D CloneTexure2D;
 	Texture2D tmpTexture2D;
-	private Material material;
+	public Material material;
 	public Color ColorPainting;
 	public Texture2D TextureReigion;
 	public bool load = false;
 	public Shader shader;
-	 Color[] colorRegion;
+	Color[] colorRegion;
 	public RenderTexture RenderTexture { get; private set; }
 	public void Init()
 	{
@@ -53,15 +55,20 @@ public class PaintingLayer : MonoBehaviour
 			tex = duplicateTexture(tex);
 
 			Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, TextureReigion);
-
+			colorRegion = SourcePainting.PageConfig.OutlineTexture.GetPixels();
 
 			material.mainTexture = tex;
 			mr.material = material;
+			//var b = GetComponent<BoxCollider>();
+			//   if(b!=null)
+			//{
+
+			//}
 			var box = gameObject.AddComponent<BoxCollider>();
 		}
 		else
 		{
-		
+
 			width = SourcePainting.PageConfig.GetSize().x;
 			height = SourcePainting.PageConfig.GetSize().y;
 			SourcePainting.T_Complete.text += "GetSize Complete \n";
@@ -77,26 +84,28 @@ public class PaintingLayer : MonoBehaviour
 			//Shader.Find("Mobile/Unlit (Supports Lightmap)")
 			SourcePainting.T_Complete.text += "Create Plane Complete \n";
 			CloneTexure2D = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
-			
+
 			TextureReigion = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
 
-			
 
-			
-		 	Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, CloneTexure2D);
+
+
+			Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, CloneTexure2D);
 			SourcePainting.T_Complete.text += "Copy Texture 1 \n";
 			Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, TextureReigion);
 
 
-		
+
 			SourcePainting.T_Complete.text += "Copy Texture 2 \n";
 			material.mainTexture = CloneTexure2D;
 			mr.material = material;
-			
+
 			colorRegion = SourcePainting.PageConfig.OutlineTexture.GetPixels();
-			var box = gameObject.AddComponent<BoxCollider>();
+			//	Destroy(gameObject.GetComponent<BoxCollider>();
+			gameObject.AddComponent<BoxCollider>(); var box = gameObject.AddComponent<BoxCollider>();
+
 		}
-	
+
 	}
 
 	public void UpdateLayer()
@@ -106,6 +115,8 @@ public class PaintingLayer : MonoBehaviour
 
 	private void Update()
 	{
+
+
 
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -117,44 +128,26 @@ public class PaintingLayer : MonoBehaviour
 			float perY = Mathf.Abs((-GetComponent<BoxCollider>().size.y / 2 - realPos.y) / GetComponent<BoxCollider>().size.y);
 			Debug.Log(perX + "  " + perY);
 
-			
-			
-			
-			TextureExtension.FloodFillBorder((Texture2D)material.mainTexture,colorRegion,(int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1));
+
+
+
+			TextureExtension.FloodFillBorder((Texture2D)material.mainTexture, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1));
 			((Texture2D)material.mainTexture).Apply();
 		}
-		if (Input.GetKeyDown(KeyCode.A))
+		if (Input.GetMouseButtonUp(0))
 		{
-			SaveTextureAsPNG((Texture2D)material.mainTexture, SaveFilePath);
+			StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, SaveFilePath));
 		}
 
 
 
 
 	}
-	string SaveDirectory
-	{
-		get
-		{
-			string dir = Path.Combine(Application.persistentDataPath, "Saves");
-			if (!Directory.Exists(dir))
-			{
-				Directory.CreateDirectory(dir);
-			}
-			return dir;
-		}
-	}
 
-	string SaveFilePath
-	{
-		get
-		{
-			return Path.Combine(SaveDirectory, SourcePainting.PageConfig.UniqueId + ".jpg");
-		}
-	}
 
 	Texture2D duplicateTexture(Texture2D source)
 	{
+
 		RenderTexture renderTex = RenderTexture.GetTemporary(
 					(int)width, (int)height,
 
@@ -172,13 +165,89 @@ public class PaintingLayer : MonoBehaviour
 		RenderTexture.ReleaseTemporary(renderTex);
 		return readableText;
 	}
-	public void SaveTextureAsPNG(Texture2D _texture, string _fullPath)
+	public IEnumerator SaveTextureAsPNG(Texture2D _texture, string _fullPath)
 	{
 
 
-		File.WriteAllBytes(SaveFilePath, _texture.EncodeToJPG());
-
+		File.WriteAllBytes(_fullPath,_texture.EncodeToJPG());
+		yield return new WaitForSeconds(0);
 
 		Debug.Log("Kb was saved as: " + _fullPath);
+	}
+
+	public void SaveToCompleted()
+	{
+		//FileUtil.DeleteFileOrDirectory(SaveFilePath);
+		StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, SaveSaveCompletedPath));
+
+	}
+
+
+
+	string SaveDirectory
+	{
+		get
+		{
+			string dir = Path.Combine(Application.persistentDataPath, "InProcess");
+			if (!Directory.Exists(dir))
+			{
+				Directory.CreateDirectory(dir);
+			}
+			return dir;
+		}
+	}
+
+
+
+	string SaveFilePath
+	{
+		get
+		{
+			return Path.Combine(SaveDirectory, SourcePainting.PageConfig.UniqueId + ".jpg");
+		}
+	}
+	string SaveCompleted
+	{
+		get
+		{
+			string dir = Path.Combine(Application.persistentDataPath, "Completed");
+			if (!Directory.Exists(dir))
+			{
+				Directory.CreateDirectory(dir);
+			}
+			return dir;
+		}
+	}
+
+
+
+	string SaveSaveCompletedPath
+	{
+		get
+		{
+			return Path.Combine(SaveCompleted, SourcePainting.PageConfig.UniqueId + ".jpg");
+		}
+	}
+	string SaveShared
+	{
+		get
+		{
+			string dir = Path.Combine(Application.persistentDataPath, "Shared");
+			if (!Directory.Exists(dir))
+			{
+				Directory.CreateDirectory(dir);
+			}
+			return dir;
+		}
+	}
+
+
+
+	string SaveSharedPath
+	{
+		get
+		{
+			return Path.Combine(SaveDirectory, SourcePainting.PageConfig.UniqueId + ".jpg");
+		}
 	}
 }

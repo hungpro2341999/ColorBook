@@ -9,7 +9,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Ins;
     public bool isGameOver = false;
     public bool isGamePause = false;
-   
+
+    public Transform UI_General;
+    public Transform UI_GamePlay;
+    public CtrlPainting Ctrl;
 
   
    
@@ -25,13 +28,13 @@ public class GameManager : MonoBehaviour
             Ins = this;
         }
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-     //  PlayerPrefs.DeleteAll();
-       
-       
+        //  PlayerPrefs.DeleteAll();
+        Ctrl.Initialize();
+        GameManager.Ins.OpenWindown(TypeWindown.Home);
     }
     private void Start()
     {
-        OpenWindown(TypeWindown.Select);
+      
     }
     public void OpenWindown(Windown win)
     {
@@ -41,8 +44,7 @@ public class GameManager : MonoBehaviour
     {
         foreach(Windown win in Windowns)
         {
-            if (win == null)
-                continue;
+       
             if(win.type == type)
             {
                 win.Open();
@@ -110,6 +112,14 @@ public class GameManager : MonoBehaviour
     {
         GameManager.Ins.isGamePause = true;
        
+    }
+
+     public void OpenSellAll(string nameCategories)
+    {
+        OpenWindown(TypeWindown.SellAll);
+
+        var win =  GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
+        win.ShowAll(nameCategories);
     }
   
    

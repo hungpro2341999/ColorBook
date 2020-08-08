@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public enum TypeWindown {GamePlay,StartGame,OverGame,Select,NextLevel,PopUpWin,PopUpLevel,PreviewLevel,WindowAds,WindowPreviewLevelLock,WindowIAP,WindownPause,WindownRate}
+public enum TypeWindown {SellAll,Home,
+    Painting,Completed
+}
 public class Windown : MonoBehaviour
 
    
 {
 
+    public float timeToClose;
+    public Animator Animtion;
    
     public TypeWindown type;
     public void Open()
@@ -15,16 +19,45 @@ public class Windown : MonoBehaviour
         
         Event_Open();
         gameObject.SetActive(true);
+        if (Animtion == null)
+        {
+           
+        }
+        else
+        {
+           
+            Animtion.SetBool("Open", true);
+        }
+       
     }
 
     public void Close()
     {
-        if(gameObject.activeSelf)
-        Event_Close();
+        if (gameObject.activeSelf)
+        {
+            Event_Close();
+            if (Animtion == null)
+            {
+                StartCoroutine(IEClose());
+            }
+            else
+            {
+                Animtion.SetBool("Open", false);
+            }
+        }
+       
 
-        gameObject.SetActive(false);
     }
 
+    public void UnActive()
+    {
+        gameObject.SetActive(false);
+    }
+    IEnumerator IEClose()
+    {
+        yield return new WaitForSeconds(timeToClose);
+        gameObject.SetActive(false);
+    }
     public virtual void Event_Open()
     {
 
