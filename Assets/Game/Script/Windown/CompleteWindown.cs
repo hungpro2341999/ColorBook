@@ -41,6 +41,8 @@ public class CompleteWindown :Windown
     public void SaveToCompleted()
     {
         CtrlPainting.Ins.Paint.SaveToCompleted();
+        CtrlPainting.Ins.ApplyToChage("Completed");
+        
     }
     public void Continue()
     {

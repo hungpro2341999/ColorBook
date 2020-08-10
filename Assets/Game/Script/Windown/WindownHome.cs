@@ -4,14 +4,28 @@ using UnityEngine;
 
 public class WindownHome : Windown
 {
-    public TabCtrl tabSaveImag;
+    public TabCompleted tabSaveImg;
+    public TabCatogories tabCategories;
+   
     private void Start()
     {
-        Event_Open();
+        tabCategories.Init();
     }
     public override void Event_Open()
     {
+        Debug.Log("Run");
         GameManager.Ins.UI_General.gameObject.SetActive(true);
-        tabSaveImag.Init();
+        tabSaveImg.Init();
+       
+    }
+
+    public TabCatogories GetTabCategories()
+    {
+        return tabCategories;
+    }
+
+    public TabCompleted GetTabSaveImg()
+    {
+        return tabSaveImg;
     }
 }

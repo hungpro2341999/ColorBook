@@ -22,6 +22,12 @@ public class DataCategori : MonoBehaviour
     [System.Serializable]
     public class Categories
     {
+        public Categories(string NameCategories,List<Image> ListPainting)
+        {
+            this.NameCategories = NameCategories;
+            this.ListPainting   = ListPainting;
+        }
+
         public string NameCategories;
         public List<Image> ListPainting = new List<Image>();
     }
@@ -29,15 +35,26 @@ public class DataCategori : MonoBehaviour
     [System.Serializable]
     public class ListPathSave
     {
-        List<PathSave> List = new List<PathSave>();
+      public ListPathSave(List<PathSavePainting> List)
+        {
+            this.List = List;
+        }
+      public  List<PathSavePainting> List = new List<PathSavePainting>();
     }
-      
+
 
 
     [System.Serializable]
-    public class PathSave
+    public class PathSavePainting
     {
 
+        public PathSavePainting(string categories, string path, string unique)
+        {
+            this.categories = categories;
+            this.path = path;
+            this.uniqueId = unique;
+        }
+       
        public string categories;
        public string path;
        public string uniqueId;

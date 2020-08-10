@@ -14,6 +14,9 @@ public class CtrlPainting : MonoBehaviour
     public float Width;
     public float Height;
     public Text T_Complete;
+    public  CacheToPainting CacheToPaint = new CacheToPainting();
+    public List<string> PaintChage;
+     
    
     // Start is called before the first frame update
     void Start()
@@ -59,12 +62,37 @@ public class CtrlPainting : MonoBehaviour
 
 
 
-    public void StartPainting(ColoringPageConfig Color,bool Load)
+    public void StartPainting(ColoringPageConfig Color,bool Load,ShowImageIcon ButtonChange, DataCategori.PathSavePainting PathSave)
     {
+        CacheToPaint.Change = ButtonChange;
+        CacheToPaint.PathSave = PathSave;
+        
         Paint.load = Load;
         PageConfig = Color;
         Init();
         CameraZoom.Init(this);
         Paint.Init();
+       
+
     }
+    [System.Serializable]
+    public class CacheToPainting
+    {
+
+        public ShowImageIcon Change;
+        public DataCategori.PathSavePainting PathSave;
+    }
+
+
+    public void ApplyToChage(string path)
+    {
+
+
+        CacheToPaint.Change.PathPainting = path;
+        CacheToPaint.Change.LoadIcon();
+        
+        var home =   ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
+        home.tabCategories.ChangeCategories(CacheToPaint.PathSave.categories, path, CacheToPaint.PathSave.uniqueId);
+    }
+    
 }

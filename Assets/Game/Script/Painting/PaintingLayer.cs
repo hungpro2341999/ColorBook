@@ -59,12 +59,13 @@ public class PaintingLayer : MonoBehaviour
 
 			material.mainTexture = tex;
 			mr.material = material;
-			//var b = GetComponent<BoxCollider>();
-			//   if(b!=null)
-			//{
+			if (gameObject.GetComponent<BoxCollider>() != null)
+			{
+				Destroy(gameObject.GetComponent<BoxCollider>());
+			}
 
-			//}
-			var box = gameObject.AddComponent<BoxCollider>();
+			gameObject.AddComponent<BoxCollider>();
+		
 		}
 		else
 		{
@@ -101,8 +102,13 @@ public class PaintingLayer : MonoBehaviour
 			mr.material = material;
 
 			colorRegion = SourcePainting.PageConfig.OutlineTexture.GetPixels();
-			//	Destroy(gameObject.GetComponent<BoxCollider>();
-			gameObject.AddComponent<BoxCollider>(); var box = gameObject.AddComponent<BoxCollider>();
+			if(gameObject.GetComponent<BoxCollider>()!=null)
+			{
+				Destroy(gameObject.GetComponent<BoxCollider>());
+			}
+			
+			gameObject.AddComponent<BoxCollider>(); 
+		
 
 		}
 
