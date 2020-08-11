@@ -12,8 +12,16 @@ public class TabCtrl : MonoBehaviour
     public System.Action OnCompleteChangeTab;
     public bool DoneMove = true;
     public Vector3 TargetPos;
+    public void Init()
+    {
+        for (int i = 0; i < Tabs.Count; i++)
+        {
+            Tabs[i].TriggerTab();
 
-    
+        }
+
+    }
+
     public void AciveAll()
     {
         for(int i=0;i<Tabs.Count;i++)
@@ -105,14 +113,14 @@ public class TabCtrl : MonoBehaviour
 
     }
 
-    public void Init()
+  
+
+    public void ReflectTab()
     {
         for (int i = 0; i < Tabs.Count; i++)
         {
-            Tabs[i].TriggerTab();
-
+            Tabs[i].Reflect();
         }
-
     }
 
     

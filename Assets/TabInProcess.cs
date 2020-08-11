@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class TabInProcess : TabCompleted
 {
-    
+ 
+        
 
-    
-    
-
-
-
-    
-
-  
 }

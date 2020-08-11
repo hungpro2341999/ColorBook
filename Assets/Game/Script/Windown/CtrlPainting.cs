@@ -9,6 +9,7 @@ public class CtrlPainting : MonoBehaviour
     public static CtrlPainting Ins = null;
 
     public ColoringPageConfig PageConfig;
+  
     public PaintingLayer Paint;
     public CtrlCameraZoom CameraZoom;
     public float Width;
@@ -66,7 +67,7 @@ public class CtrlPainting : MonoBehaviour
     {
         CacheToPaint.Change = ButtonChange;
         CacheToPaint.PathSave = PathSave;
-        
+        CacheToPaint.Paint = GameManager.Ins.GetHome().GetTabMyArt().GetTabInProcess().GetPaint(PathSave.categories, PathSave.uniqueId);
         Paint.load = Load;
         PageConfig = Color;
         Init();
@@ -75,12 +76,26 @@ public class CtrlPainting : MonoBehaviour
        
 
     }
+
+    public void StartPaintingFromMyArt(ColoringPageConfig Color, bool Load, Paint paint, DataCategori.PathSavePainting PathSave, ShowImageIcon ButtonChange)
+    {
+        CacheToPaint.Paint = paint;
+        CacheToPaint.PathSave = PathSave;
+        CacheToPaint.Change = ButtonChange;
+
+        Paint.load = Load;
+        PageConfig = Color;
+        Init();
+        CameraZoom.Init(this);
+        Paint.Init();
+    }
     [System.Serializable]
     public class CacheToPainting
     {
 
         public ShowImageIcon Change;
         public DataCategori.PathSavePainting PathSave;
+        public Paint Paint;
     }
 
 
@@ -88,11 +103,41 @@ public class CtrlPainting : MonoBehaviour
     {
 
 
-        CacheToPaint.Change.PathPainting = path;
-        CacheToPaint.Change.LoadIcon();
+    
+        if(CacheToPaint.Change!=null)
+        {
+            CacheToPaint.Change.LoadIcon();
+        }
+        if (CacheToPaint.Paint != null)
+        {
+            CacheToPaint.Paint.LoadPaint();
+        }
+       
         
         var home =   ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
         home.tabCategories.ChangeCategories(CacheToPaint.PathSave.categories, path, CacheToPaint.PathSave.uniqueId);
+
+        CacheToPaint.Change = null;
+        CacheToPaint.Paint = null;
+        CacheToPaint.PathSave = null;
+        
+       
     }
+
+   public void ApplyToChangeToCompled()
+    {
+        if (CacheToPaint.Paint!=null)
+        {
+            CacheToPaint.Paint.LoadPaint();
+        }
+
+      
+        var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
+        home.GetTabMyArt().GetTabCompleted().AddToInforImageToDisk(CacheToPaint.PathSave.uniqueId, CacheToPaint.PathSave.categories);
+    }
+
+   
+
+   
     
 }

@@ -36,6 +36,16 @@ public class GameManager : MonoBehaviour
     {
       
     }
+    private void Update()
+    {
+      
+      
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                PlayerPrefs.DeleteAll();
+            }
+        
+    }
     public void OpenWindown(Windown win)
     {
         OpenWindown(win.type);
@@ -121,6 +131,9 @@ public class GameManager : MonoBehaviour
         var win =  GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
         win.ShowAll(nameCategories);
     }
-  
+  public WindownHome GetHome()
+    {
+        return (WindownHome)GetWindown(TypeWindown.Home);
+    }
    
 }

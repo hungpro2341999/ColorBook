@@ -15,7 +15,7 @@ public class PaintingLayer : MonoBehaviour
 	public CtrlPainting SourcePainting;
 	public float width;
 	public float height;
-
+	
 
 	Texture2D CloneTexure2D;
 	Texture2D tmpTexture2D;
@@ -26,11 +26,15 @@ public class PaintingLayer : MonoBehaviour
 	public Shader shader;
 	Color[] colorRegion;
 	public RenderTexture RenderTexture { get; private set; }
+
+	public string PathSave;
 	public void Init()
 	{
 		//shader = Shader.Find("Mobile/Particles/Additive");
 		if (load)
 		{
+
+			PathSave = SourcePainting.CacheToPaint.PathSave.path;
 			width = SourcePainting.PageConfig.GetSize().x;
 			height = SourcePainting.PageConfig.GetSize().y;
 			MeshFilter mf = GOUtil.CreateComponentIfNoExists<MeshFilter>(gameObject);
@@ -47,7 +51,7 @@ public class PaintingLayer : MonoBehaviour
 			Texture2D tex = new Texture2D((int)width, (int)height, TextureFormat.ARGB32, false);
 
 
-			if (tex.LoadImage(File.ReadAllBytes(SaveFilePath)))
+			if (tex.LoadImage(File.ReadAllBytes(PathSave)))
 			{
 				tex.Apply();
 
@@ -142,7 +146,7 @@ public class PaintingLayer : MonoBehaviour
 		}
 		if (Input.GetMouseButtonUp(0))
 		{
-			StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, SaveFilePath));
+			StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
 		}
 
 
@@ -184,8 +188,8 @@ public class PaintingLayer : MonoBehaviour
 	public void SaveToCompleted()
 	{
 		//FileUtil.DeleteFileOrDirectory(SaveFilePath);
-		StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, SaveSaveCompletedPath));
-
+		StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture,SaveSaveCompletedPath));
+		CtrlPainting.Ins.ApplyToChangeToCompled();
 	}
 
 
@@ -254,6 +258,13 @@ public class PaintingLayer : MonoBehaviour
 		get
 		{
 			return Path.Combine(SaveDirectory, SourcePainting.PageConfig.UniqueId + ".jpg");
+		}
+	}
+	private void OnDisable()
+	{
+		if (gameObject.GetComponent<BoxCollider>() != null)
+		{
+			Destroy(gameObject.GetComponent<BoxCollider>());
 		}
 	}
 }

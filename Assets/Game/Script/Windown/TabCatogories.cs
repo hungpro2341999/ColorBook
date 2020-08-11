@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PaintCraft.Canvas.Configs;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,5 +40,29 @@ public class TabCatogories : Tab
             }
         }
         return  "";
+    }
+
+    public ColoringPageConfig GetPaintConfig(string name,string unique)
+    {
+        foreach (var categories in ListCategories)
+        {
+            if (categories.nameCategories == name)
+            {
+                return categories.GetPathConfig(unique);
+            }
+        }
+        return null;
+    }
+
+    public ShowImageIcon GetShowImageIcon(string name,string unique)
+    {
+        foreach (var categories in ListCategories)
+        {
+            if (categories.nameCategories == name)
+            {
+                return categories.GetIconShow(unique);
+            }
+        }
+        return null;
     }
 }

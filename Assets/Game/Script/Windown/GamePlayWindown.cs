@@ -21,7 +21,7 @@ public class GamePlayWindown : Windown
     }
     public override void Event_Close()
     {
-
-        CtrlPainting.Ins.ApplyToChage("InProcess");
+        if(CtrlPainting.Ins.CacheToPaint.PathSave!=null)
+        CtrlPainting.Ins.ApplyToChage(CtrlPainting.Ins.CacheToPaint.PathSave.path);
     }
 }

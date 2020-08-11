@@ -13,6 +13,8 @@ public class ShowImageIcon : MonoBehaviour
     public string PathPainting="";
     private void Start()
     {
+
+        PathPainting = SaveFilePath;
         nameCategories = "Basic";
         Button button = GetComponent<Button>();
         button.onClick.AddListener(OpenGameWindow);
@@ -21,17 +23,8 @@ public class ShowImageIcon : MonoBehaviour
     // Start is called before the first frame update
     public void LoadIcon()
     {
-        //Texture2D CloneTexture2D = new Texture2D((int)Page.GetSize().x, (int)Page.GetSize().y, TextureFormat.ARGB32, false);
-
-        //Graphics.CopyTexture(Page.OutlineTexture, CloneTexture2D);
-
-
-
-        //CloneTexture2D.Apply(false, true);
-        //button.targetGraphic.GetComponent<Image>().sprite = Sprite.Create(CloneTexture2D, new Rect(0, 0, (int)Page.GetSize().x, (int)Page.GetSize().y), new Vector2(0.5f, 0.5f));
-        Debug.Log("ChageImage : " + gameObject.name);
+        
       
-
         Button button = GetComponent<Button>();
         button.onClick.AddListener(OpenGameWindow);
         Texture2D tex = new Texture2D((int)Page.GetSize().x, (int)Page.GetSize().y, TextureFormat.RGBA32, false);
@@ -62,7 +55,7 @@ public class ShowImageIcon : MonoBehaviour
     {
         get
         {
-            string dir = Path.Combine(Application.persistentDataPath, PathPainting);
+            string dir = Path.Combine(Application.persistentDataPath, "InProcess");
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -81,21 +74,30 @@ public class ShowImageIcon : MonoBehaviour
 
     public void OpenGameWindow()
     {
+       
         GameManager.Ins.OpenWindown(TypeWindown.Painting);
 
-        PathPainting = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home)).tabCategories.GetPath("Basic", Page.UniqueId);
-       
-        if (File.Exists(SaveFilePath))
+      
+
+        if (File.Exists(PathPainting))
         {
-            DataCategori.PathSavePainting Save = new DataCategori.PathSavePainting(nameCategories,PathPainting,Page.UniqueId);
+            CtrlPainting.Ins.Paint.PathSave = PathPainting;
+            DataCategori.PathSavePainting Save = new DataCategori.PathSavePainting(nameCategories, PathPainting, Page.UniqueId);
             CtrlPainting.Ins.StartPainting(Page, true,this,Save);
         }
         else
         {
+            CtrlPainting.Ins.Paint.PathSave = PathPainting;
             DataCategori.PathSavePainting Save = new DataCategori.PathSavePainting(nameCategories,"", Page.UniqueId);
             CtrlPainting.Ins.StartPainting(Page, false,this,Save);
         }
-        
-       
+
+      
+
+        var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
+
+        home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(Page.UniqueId, nameCategories);
+
+
     }
 }

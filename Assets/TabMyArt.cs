@@ -12,11 +12,10 @@ public class TabMyArt : TabCtrl
         return (TabInProcess)Tabs[0];
     }
 
-    public TabInProcess GetTabCompleted()
+    public TabCompleted GetTabCompleted()
     {
-        return (TabInProcess)Tabs[1];
+        return (TabCompleted)Tabs[1];
     }
-
 
 
 

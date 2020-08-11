@@ -25,7 +25,10 @@ public class Tab : MonoBehaviour
     {
 
     }
-    
 
 
+    public virtual void Reflect()
+    {
+
+    }
 }

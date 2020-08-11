@@ -1,4 +1,5 @@
 ﻿using PaintCraft.Canvas.Configs;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,6 +55,30 @@ public class Categories : MonoBehaviour
                 i++;
             }
         }
+    }
+
+    public ShowImageIcon GetIconShow(string unique)
+    {
+        for (int i = 0; i < ColorPageConfig.Length; i++)
+        {
+            if (ColorPageConfig[i].Page.UniqueId == unique)
+            {
+                return ColorPageConfig[i];
+            }
+        }
+        return null;
+    }
+
+    public  ColoringPageConfig GetPathConfig(string unique)
+    {
+        for(int i = 0; i < ColorPageConfig.Length;i++)
+        {
+            if(ColorPageConfig[i].Page.UniqueId == unique)
+            {
+                return ColorPageConfig[i].Page;
+            }
+        }
+        return null;
     }
 
     public List<DataCategori.PathSavePainting> GetCategories()

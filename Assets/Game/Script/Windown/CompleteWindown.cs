@@ -7,11 +7,15 @@ using UnityEngine.UI;
 public class CompleteWindown :Windown
 {
     // Start is called before the first frame update
-    public Image img; 
+    public Image img;
+  
+   
     void Start()
     {
         
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -41,8 +45,9 @@ public class CompleteWindown :Windown
     public void SaveToCompleted()
     {
         CtrlPainting.Ins.Paint.SaveToCompleted();
-        CtrlPainting.Ins.ApplyToChage("Completed");
-        
+    
+
+
     }
     public void Continue()
     {

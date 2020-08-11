@@ -263,7 +263,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9209667795251579137}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7765884519482709744}
+        m_MethodName: ResetPaint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &9209667795689001955
@@ -383,7 +394,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9209667795689001952}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7765884519482709744}
+        m_MethodName: DeletePaint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &9209667795833581308
@@ -503,7 +525,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9209667795833581305}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7765884519482709744}
+        m_MethodName: OpenGameWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &9209667796349021988
@@ -587,5 +620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7b4ddd8a2881e4e97ae1ad86f9407c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PageColorPainting: {fileID: 0}
   categories: 
   unique: 
+  PathPainting: 
+  typeLocal: 
