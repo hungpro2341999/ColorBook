@@ -81,6 +81,18 @@ public class LoadStyleImage : Editor
         }
         if (GUILayout.Button("AddAnimToGame", buttonStyle))
         {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Basic");
+
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
             var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
             ctrl.categories[0].NameCategories = "Basic";
           
@@ -90,10 +102,11 @@ public class LoadStyleImage : Editor
             for(int i=0;i<Asset.Count;i++)
             {
                var a = Instantiate(Obj, parent);
-            
+
+                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Basic";
                 a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[0].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
+                a.transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
             }
 
         }
@@ -148,6 +161,19 @@ public class LoadStyleImage : Editor
       
         if (GUILayout.Button("AddCartoonToGame", buttonStyle))
         {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Cartoon");
+
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
+
             var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
             ctrl.categories[1].NameCategories = "Cartoon";
 
@@ -158,10 +184,13 @@ public class LoadStyleImage : Editor
             for (int i = 0; i < Asset.Count; i++)
             {
                 var a = Instantiate(Obj, parent);
+             
 
                 a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[1].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
                 a.transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
+                a.transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cartoon";
             }
 
 
@@ -217,6 +246,17 @@ public class LoadStyleImage : Editor
         }
         if (GUILayout.Button("AddCatToGame", buttonStyle))
         {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Cat");
+
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
             var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
             ctrl.categories[2].NameCategories = "Cat";
 
@@ -230,7 +270,9 @@ public class LoadStyleImage : Editor
 
                 a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[2].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
+              
+                a.transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cat";
             }
 
 
@@ -271,6 +313,8 @@ public class LoadStyleImage : Editor
                 }
             }
 
+           
+
             var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/Editor's choiceAsset");
 
 
@@ -287,6 +331,18 @@ public class LoadStyleImage : Editor
         }
         if (GUILayout.Button("AddEditor's choiceToGame", buttonStyle))
         {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Editor's choice");
+
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
             var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
             ctrl.categories[3].NameCategories = "Editor's choice";
 
@@ -300,7 +356,9 @@ public class LoadStyleImage : Editor
 
                 a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[3].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
+                a.transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Editor's choice";
+
             }
 
 
@@ -328,7 +386,6 @@ public class LoadStyleImage : Editor
 
         if (GUILayout.Button("AddHuman", buttonStyle))
         {
-
             List<Sprite> Images = new List<Sprite>();
             var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Human");
 
@@ -340,6 +397,8 @@ public class LoadStyleImage : Editor
                     Images.Add(Paint[i]);
                 }
             }
+
+          
 
             var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/HumanAsset");
 
@@ -357,6 +416,17 @@ public class LoadStyleImage : Editor
         }
         if (GUILayout.Button("AddHumanToGame", buttonStyle))
         {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Human");
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
             var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
             ctrl.categories[4].NameCategories = "Human";
 
@@ -370,7 +440,8 @@ public class LoadStyleImage : Editor
 
                 a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[4].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
+                a.transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Human";
             }
 
 

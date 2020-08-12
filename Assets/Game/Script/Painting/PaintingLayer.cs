@@ -24,6 +24,7 @@ public class PaintingLayer : MonoBehaviour
 	public Texture2D TextureReigion;
 	public bool load = false;
 	public Shader shader;
+	public bool StartFloodFill;
 	Color[] colorRegion;
 	public RenderTexture RenderTexture { get; private set; }
 
@@ -115,7 +116,7 @@ public class PaintingLayer : MonoBehaviour
 		
 
 		}
-
+		((Texture2D)material.mainTexture).Apply();
 	}
 
 	public void UpdateLayer()
@@ -138,10 +139,10 @@ public class PaintingLayer : MonoBehaviour
 			float perY = Mathf.Abs((-GetComponent<BoxCollider>().size.y / 2 - realPos.y) / GetComponent<BoxCollider>().size.y);
 			Debug.Log(perX + "  " + perY);
 
+			FloodFillBorder((Texture2D)material.mainTexture, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1));
 
 
 
-			TextureExtension.FloodFillBorder((Texture2D)material.mainTexture, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1));
 			((Texture2D)material.mainTexture).Apply();
 		}
 		if (Input.GetMouseButtonUp(0))
@@ -149,7 +150,7 @@ public class PaintingLayer : MonoBehaviour
 			StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
 		}
 
-
+		
 
 
 	}
@@ -192,7 +193,11 @@ public class PaintingLayer : MonoBehaviour
 		CtrlPainting.Ins.ApplyToChangeToCompled();
 	}
 
-
+	public void SaveToShared()
+	{
+		StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, SaveSharedPath));
+		CtrlPainting.Ins.ApplyToChangeToShared();
+	}
 
 	string SaveDirectory
 	{
@@ -238,7 +243,12 @@ public class PaintingLayer : MonoBehaviour
 			return Path.Combine(SaveCompleted, SourcePainting.PageConfig.UniqueId + ".jpg");
 		}
 	}
-	string SaveShared
+	
+	
+
+
+
+	string SaveSharedPath
 	{
 		get
 		{
@@ -247,17 +257,8 @@ public class PaintingLayer : MonoBehaviour
 			{
 				Directory.CreateDirectory(dir);
 			}
-			return dir;
-		}
-	}
 
-
-
-	string SaveSharedPath
-	{
-		get
-		{
-			return Path.Combine(SaveDirectory, SourcePainting.PageConfig.UniqueId + ".jpg");
+			return Path.Combine(dir, SourcePainting.PageConfig.UniqueId + ".jpg");
 		}
 	}
 	private void OnDisable()
@@ -266,5 +267,68 @@ public class PaintingLayer : MonoBehaviour
 		{
 			Destroy(gameObject.GetComponent<BoxCollider>());
 		}
+	}
+	
+	 public void FloodFillBorder(Texture2D targetTexture, Color[] aTex, int aX, int aY, Color aFillColor, Color aBorderColor)
+	{
+		int w = targetTexture.width;
+		int h = targetTexture.height;
+		Color[] colors = targetTexture.GetPixels();
+		Color[] colorsBorder = aTex;
+		byte[] checkedPixels = new byte[colors.Length];
+		Color refCol = aBorderColor;
+		Queue<Point> nodes = new Queue<Point>();
+		nodes.Enqueue(new Point(aX, aY));
+		while(nodes.Count > 0)
+		{
+			Point current = nodes.Dequeue();
+
+			for (int i = current.x; i < w; i++)
+			{
+				if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
+					break;
+
+				colors[i + current.y * w] = aFillColor;
+				checkedPixels[i + current.y * w] = 1;
+				if (current.y + 1 < h)
+				{
+					if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
+						nodes.Enqueue(new Point(i, current.y + 1));
+				}
+				if (current.y - 1 >= 0)
+				{
+					if (checkedPixels[i + current.y * w - w] == 0 && colorsBorder[i + current.y * w - w] != refCol)
+						nodes.Enqueue(new Point(i, current.y - 1));
+				}
+			}
+			for (int i = current.x - 1; i >= 0; i--)
+			{
+				if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
+					break;
+				colors[i + current.y * w] = aFillColor;
+				checkedPixels[i + current.y * w] = 1;
+				if (current.y + 1 < h)
+				{
+					if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
+						nodes.Enqueue(new Point(i, current.y + 1));
+				}
+				if (current.y - 1 >= 0)
+				{
+					if (checkedPixels[i + current.y * w - w] == 0 && colorsBorder[i + current.y * w - w] != refCol)
+						nodes.Enqueue(new Point(i, current.y - 1));
+				}
+
+			}
+
+		}
+	
+		targetTexture.SetPixels(colors);
+	}
+	public struct Point
+	{
+		public short x;
+		public short y;
+		public Point(short aX, short aY) { x = aX; y = aY; }
+		public Point(int aX, int aY) : this((short)aX, (short)aY) { }
 	}
 }

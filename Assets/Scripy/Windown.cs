@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public enum TypeWindown {SellAll,Home,
-    Painting,Completed
+    Painting,Completed,Loading
 }
 public class Windown : MonoBehaviour
 

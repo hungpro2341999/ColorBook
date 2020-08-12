@@ -9,6 +9,7 @@ public class WindownSeeAll : Windown
     public List<GameObject> PoolIcon;
     public Transform parent;
     public DataCategori Data;
+    public Text nameCategories;
     // Start is called before the first frame update
     
 
@@ -26,6 +27,7 @@ public class WindownSeeAll : Windown
    
     public void ShowAll(string nameCategories)
     {
+        this.nameCategories.text = nameCategories;
         int count = 0;
         List<Image> ImgShow = new List<Image>();
         for(int i=0;i < Data.categories.Count;i++)

@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour
     public Transform UI_GamePlay;
     public CtrlPainting Ctrl;
 
-  
+    public bool Loading = false;
+    public Transform TrsLoading;
+   
    
     private void Awake()
     {
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour
         {
             Ins = this;
         }
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+     
         //  PlayerPrefs.DeleteAll();
         Ctrl.Initialize();
         GameManager.Ins.OpenWindown(TypeWindown.Home);
@@ -38,8 +40,9 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-      
-      
+
+
+            Application.targetFrameRate = 120;
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 PlayerPrefs.DeleteAll();
@@ -126,14 +129,44 @@ public class GameManager : MonoBehaviour
 
      public void OpenSellAll(string nameCategories)
     {
-        OpenWindown(TypeWindown.SellAll);
 
-        var win =  GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
-        win.ShowAll(nameCategories);
     }
   public WindownHome GetHome()
     {
         return (WindownHome)GetWindown(TypeWindown.Home);
     }
+    public IEnumerator StartLoading(System.Action ActionEnd,System.Action ActionLoading)
+    {
+        TrsLoading.gameObject.SetActive(true);
+        ActionLoading();
+       
+        Loading = true;
+       
+
+         yield return new WaitForSeconds(2);
+        TrsLoading.gameObject.SetActive(false);
+
+        if (ActionEnd != null)
+        {
+            ActionEnd();
+        }
+
+
+
+    }
+    public void StartLoadingData(System.Action Action)
+    {
+        
+      
+    }
+
+
+
+    public void StartSyncAciton(System.Action ActionEnd, System.Action ActionLoading)
+    {
+
+    }
+
+    
    
 }

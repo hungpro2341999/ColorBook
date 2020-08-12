@@ -18,6 +18,9 @@ public class TabMyArt : TabCtrl
     }
 
 
+    public TabShared GetTabShared()
+    {
+        return (TabShared)Tabs[2];
+    }
 
-   
 }

@@ -14,8 +14,8 @@ public class ShowImageIcon : MonoBehaviour
     private void Start()
     {
 
-        PathPainting = SaveFilePath;
-        nameCategories = "Basic";
+         PathPainting = SaveFilePath;
+   
         Button button = GetComponent<Button>();
         button.onClick.AddListener(OpenGameWindow);
     }
@@ -26,7 +26,7 @@ public class ShowImageIcon : MonoBehaviour
         
       
         Button button = GetComponent<Button>();
-        button.onClick.AddListener(OpenGameWindow);
+     
         Texture2D tex = new Texture2D((int)Page.GetSize().x, (int)Page.GetSize().y, TextureFormat.RGBA32, false);
         if (File.Exists(SaveFilePath))
         {
@@ -74,30 +74,39 @@ public class ShowImageIcon : MonoBehaviour
 
     public void OpenGameWindow()
     {
-       
-        GameManager.Ins.OpenWindown(TypeWindown.Painting);
 
+       StartCoroutine(GameManager.Ins.StartLoading(() => { GameManager.Ins.OpenWindown(TypeWindown.Painting); }
+
+        , StartLoading));
+     
       
 
+    }
+
+    public void StartLoading()
+    {
         if (File.Exists(PathPainting))
         {
             CtrlPainting.Ins.Paint.PathSave = PathPainting;
             DataCategori.PathSavePainting Save = new DataCategori.PathSavePainting(nameCategories, PathPainting, Page.UniqueId);
-            CtrlPainting.Ins.StartPainting(Page, true,this,Save);
+            CtrlPainting.Ins.StartPainting(Page, true, this, Save);
+
+
         }
         else
         {
+
             CtrlPainting.Ins.Paint.PathSave = PathPainting;
-            DataCategori.PathSavePainting Save = new DataCategori.PathSavePainting(nameCategories,"", Page.UniqueId);
-            CtrlPainting.Ins.StartPainting(Page, false,this,Save);
+            DataCategori.PathSavePainting Save = new DataCategori.PathSavePainting(nameCategories, "", Page.UniqueId);
+            CtrlPainting.Ins.StartPainting(Page, false, this, Save);
+            var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
+            home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(CtrlPainting.Ins.CacheToPaint.PathSave.uniqueId, CtrlPainting.Ins.CacheToPaint.PathSave.categories);
         }
 
-      
-
-        var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
-
-        home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(Page.UniqueId, nameCategories);
-
-
+       
     }
+
+    
+
+    
 }

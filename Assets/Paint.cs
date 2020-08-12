@@ -34,6 +34,7 @@ public class Paint : MonoBehaviour
 
     public void Load(string nameCategories,string unique,string path)
     {
+      
         this.categories = nameCategories;
         this.unique     = unique;
         PageColorPainting = GetColorPainting(categories, unique);
@@ -52,11 +53,19 @@ public class Paint : MonoBehaviour
     }
     public void OpenGameWindow()
     {
+
+        StartCoroutine(GameManager.Ins.StartLoading(() => { GameManager.Ins.OpenWindown(TypeWindown.Painting); }, LoadPainting));
+
+
+    }
+
+    public void LoadPainting()
+    {
         if (isChangeCategories)
         {
 
 
-            GameManager.Ins.OpenWindown(TypeWindown.Painting);
+         
             Debug.Log(PathPainting);
 
             ShowImageIcon ShowImageIcon = GameManager.Ins.GetHome().GetTabCategories().GetShowImageIcon(categories, unique);
@@ -67,17 +76,14 @@ public class Paint : MonoBehaviour
         else
         {
 
-            GameManager.Ins.OpenWindown(TypeWindown.Painting);
+           
             Debug.Log(PathPainting);
 
-         
+
             DataCategori.PathSavePainting Save = new DataCategori.PathSavePainting(categories, PathPainting, PageColorPainting.UniqueId);
-            CtrlPainting.Ins.StartPaintingFromMyArt(PageColorPainting, true, this, Save,null);
+            CtrlPainting.Ins.StartPaintingFromMyArt(PageColorPainting, true, this, Save, null);
 
         }
-
-
-
 
 
     }

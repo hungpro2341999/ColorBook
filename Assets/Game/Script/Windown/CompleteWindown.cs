@@ -44,10 +44,15 @@ public class CompleteWindown :Windown
 
     public void SaveToCompleted()
     {
-        CtrlPainting.Ins.Paint.SaveToCompleted();
-    
+
+        GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToCompleted(); });
 
 
+    }
+    public void SaveToShared()
+    {
+        GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToShared(); });
+        
     }
     public void Continue()
     {

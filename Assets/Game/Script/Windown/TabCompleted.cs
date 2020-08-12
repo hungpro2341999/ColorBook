@@ -83,6 +83,7 @@ public class TabCompleted : Tab
             float width = 0;
             float height = 0;
             Texture2D tex = new Texture2D(500, 500, TextureFormat.RGB24, false);
+           
             var a = Instantiate(PerbIcon, Parent).GetComponent<Paint>();
             a.isChangeCategories = isChangeCategories;
             a.typeLocal = path;
@@ -133,10 +134,11 @@ public class TabCompleted : Tab
         float width = 0;
         float height = 0;
         Texture2D tex = new Texture2D(500, 500, TextureFormat.RGB24, false);
-        var a = Instantiate(PerbIcon, Parent);
-
-        a.GetComponent<Paint>().Load(file.nameCategories, file.unique, path);
-
+        var a = Instantiate(PerbIcon, Parent).GetComponent<Paint>();
+        a.isChangeCategories = isChangeCategories;
+        a.typeLocal = path;
+        a.Load(file.nameCategories, file.unique, path);
+      
 
         if (tex.LoadImage(File.ReadAllBytes(Path.Combine(SaveFilePath,(file.unique+".jpg")))))
         {

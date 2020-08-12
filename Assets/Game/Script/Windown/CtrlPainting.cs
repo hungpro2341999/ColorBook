@@ -137,7 +137,16 @@ public class CtrlPainting : MonoBehaviour
     }
 
    
+    public void ApplyToChangeToShared()
+    {
+        if (CacheToPaint.Paint != null)
+        {
+            CacheToPaint.Paint.LoadPaint();
+        }
+        var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
+        home.GetTabMyArt().GetTabShared().AddToInforImageToDisk(CacheToPaint.PathSave.uniqueId, CacheToPaint.PathSave.categories);
 
+    }
    
     
 }

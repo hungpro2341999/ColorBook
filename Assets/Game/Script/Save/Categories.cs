@@ -125,7 +125,13 @@ public class Categories : MonoBehaviour
         }
         return null;
     }
+    public void ShowAll()
+    {
+       GameManager.Ins.OpenWindown(TypeWindown.SellAll);
 
+        var win = GameManager.Ins.GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
+        win.ShowAll(nameCategories);
+    }
     
 
 

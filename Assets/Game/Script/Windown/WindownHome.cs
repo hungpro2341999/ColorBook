@@ -6,9 +6,11 @@ public class WindownHome : Windown
 {
     public TabMyArt tabSaveImg;
     public TabCatogories tabCategories;
+    public TabShared tabShared;
    
     private void Start()
     {
+       
         tabCategories.Init();
         tabSaveImg.Init();
     }
@@ -29,4 +31,6 @@ public class WindownHome : Windown
     {
         return tabSaveImg;
     }
+
+  
 }

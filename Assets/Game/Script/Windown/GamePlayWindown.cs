@@ -17,11 +17,25 @@ public class GamePlayWindown : Windown
 
     public void BackToHome()
     {
-        GameManager.Ins.OpenWindown(TypeWindown.Home);
+      StartCoroutine(GameManager.Ins.StartLoading(() => { GameManager.Ins.OpenWindown(TypeWindown.Home); }, LoadBack));
     }
     public override void Event_Close()
     {
-        if(CtrlPainting.Ins.CacheToPaint.PathSave!=null)
-        CtrlPainting.Ins.ApplyToChage(CtrlPainting.Ins.CacheToPaint.PathSave.path);
+      
+
+
+        //var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
+        //home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(CtrlPainting.Ins.CacheToPaint.PathSave.uniqueId, CtrlPainting.Ins.CacheToPaint.PathSave.categories);
+
+    }
+
+    public void LoadBack()
+    {
+        if (CtrlPainting.Ins.CacheToPaint.PathSave != null)
+            CtrlPainting.Ins.ApplyToChage(CtrlPainting.Ins.CacheToPaint.PathSave.path);
+        if (CtrlPainting.Ins.CacheToPaint.Paint != null)
+        {
+            CtrlPainting.Ins.CacheToPaint.Paint.LoadPaint();
+        }
     }
 }
