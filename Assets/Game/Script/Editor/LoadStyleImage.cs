@@ -103,10 +103,10 @@ public class LoadStyleImage : Editor
             {
                var a = Instantiate(Obj, parent);
 
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Basic";
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Basic";
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[0].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
             }
 
         }
@@ -184,13 +184,13 @@ public class LoadStyleImage : Editor
             for (int i = 0; i < Asset.Count; i++)
             {
                 var a = Instantiate(Obj, parent);
-             
 
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[1].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cartoon";
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cartoon";
             }
 
 
@@ -268,11 +268,11 @@ public class LoadStyleImage : Editor
             {
                 var a = Instantiate(Obj, parent);
 
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                a.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[2].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-              
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cat";
+
+                a.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cat";
             }
 
 
@@ -354,10 +354,10 @@ public class LoadStyleImage : Editor
             {
                 var a = Instantiate(Obj, parent);
 
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[3].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Editor's choice";
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Editor's choice";
 
             }
 
@@ -438,10 +438,10 @@ public class LoadStyleImage : Editor
             {
                 var a = Instantiate(Obj, parent);
 
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[4].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-                a.transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
-                a.transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Human";
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Human";
             }
 
 

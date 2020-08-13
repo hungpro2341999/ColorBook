@@ -35,6 +35,7 @@ public class CompleteWindown :Windown
 
 
         img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+        img.SetNativeSize();
     }
     public void Load()
     {
@@ -45,13 +46,13 @@ public class CompleteWindown :Windown
     public void SaveToCompleted()
     {
 
-        GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToCompleted(); });
+     StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToCompleted(); }));
 
 
     }
     public void SaveToShared()
     {
-        GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToShared(); });
+      StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToShared(); }));
         
     }
     public void Continue()

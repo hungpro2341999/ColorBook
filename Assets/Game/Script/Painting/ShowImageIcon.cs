@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class ShowImageIcon : MonoBehaviour
 {
@@ -11,14 +12,29 @@ public class ShowImageIcon : MonoBehaviour
     public ColoringPageConfig Page;
     public bool Load;
     public string PathPainting="";
-    private void Start()
+    public bool Show;
+    public Vector3 PointVisible;
+    public Transform PosVisible;
+    public bool IsShowStart;
+    public Animator Anim;
+    public float time;
+    public ScrollRect Scroll;
+    public bool isScroll;
+    
+    private void Awake()
     {
 
-         PathPainting = SaveFilePath;
+
+
+
+
+        Anim = transform.parent.GetComponent<Animator>();
+        PathPainting = SaveFilePath;
    
         Button button = GetComponent<Button>();
         button.onClick.AddListener(OpenGameWindow);
     }
+  
 
     // Start is called before the first frame update
     public void LoadIcon()
@@ -42,13 +58,70 @@ public class ShowImageIcon : MonoBehaviour
 
 
     }
+    
 
-   
-
-   
-    void Update()
+    public void UnVisible()
     {
-        
+        transform.parent.gameObject.SetActive(false);
+    }
+
+    public void Visible()
+    {
+        transform.parent.gameObject.SetActive(true);
+    }
+    
+
+    public  void Check()
+    {
+
+        if (!IsShowStart)
+        {
+            Show = (TabCatogories.LeftPos < transform.position.x && transform.position.x < TabCatogories.RightPos);
+            if (Show)
+            {
+              
+                Anim.SetBool("Load1", true);
+                Visible();
+                time += Time.deltaTime;
+                if(time>2f)
+                {
+                    IsShowStart = true;
+                }
+            }
+            else
+            {
+                time = 0;
+                UnVisible();
+            }
+        }
+        else
+        {
+            Show = (TabCatogories.LeftPos < transform.position.x && transform.position.x < TabCatogories.RightPos);
+            if (Show)
+            {
+              
+                Anim.SetBool("Load2", true);
+                Visible();
+
+            }
+            else
+            {
+                UnVisible();
+            }
+        }
+      
+      
+    
+
+
+    }
+    public void CompleteLoad()
+    {
+        IsShowStart = false;
+    }
+    public void LoadingImg()
+    {
+
     }
 
     string SaveDirectory

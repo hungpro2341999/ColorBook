@@ -6,11 +6,16 @@ using UnityEngine;
 public class TabCatogories : Tab
 {
     public List<Categories> ListCategories = new List<Categories>();
-
+    public static float LeftPos;
+    public static float RightPos;
+    public Transform Left;
+    public Transform Right;
 
     // Start is called before the first frame update
     public void Init()
     {
+        LeftPos = Left.transform.position.x;
+        RightPos = Right.transform.position.x;
         foreach(var categories in ListCategories)
         {
             categories.Init();

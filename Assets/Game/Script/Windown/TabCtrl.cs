@@ -49,14 +49,14 @@ public class TabCtrl : MonoBehaviour
     void Start()
     {
         float offset = -offsetChange;
-        for(int i=0;i<3;i++)
+        for(int i=0;i<Tabs.Count;i++)
         {
             Vector3 pos = Tabs[i].transform.localPosition;
             pos.x = -720 + (offsetChange * i);
             Debug.Log(offsetChange * i);
             Tabs[i].transform.localPosition = pos;
         }
-        SwitchTab(2);
+        SwitchTab(index);
     }
 
     // Update is called once per frame

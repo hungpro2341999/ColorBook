@@ -3,16 +3,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Categories : MonoBehaviour
 {
     public string nameCategories = "";
     public ShowImageIcon[] ColorPageConfig;
     public string Key;
-    
-    // Start is called before the first frame update
-   
+    public int LimitShowStart;
+    public bool isScroll;
+    public ScrollRect Scroll;
 
+    // Start is called before the first frame update
+
+    public void OnDrag()
+    {
+        isScroll = true;
+    }
+    public void OnEndDrag()
+    {
+        isScroll = false;
+    }
     public void Init()
     {
         ColorPageConfig = transform.gameObject.GetComponentsInChildren<ShowImageIcon>();
@@ -55,6 +65,33 @@ public class Categories : MonoBehaviour
                 i++;
             }
         }
+
+        for(int i=0;i<ColorPageConfig.Length;i++)
+        {
+            if(i<LimitShowStart)
+            {
+                ColorPageConfig[i].IsShowStart = true;
+                ColorPageConfig[i].Visible();
+                try
+                {
+                    ColorPageConfig[i].Anim.SetBool("Load1", true);
+                }
+                catch(System.Exception e)
+                {
+
+                }
+               
+            }
+            else
+            {
+                ColorPageConfig[i].IsShowStart = false;
+                ColorPageConfig[i].UnVisible();
+            }
+           
+        }
+       
+
+
     }
 
     public ShowImageIcon GetIconShow(string unique)
@@ -132,7 +169,25 @@ public class Categories : MonoBehaviour
         var win = GameManager.Ins.GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
         win.ShowAll(nameCategories);
     }
-    
 
+    private void Update()
+    {
+        isScroll = (Vector3.Magnitude(Scroll.velocity) > 0.01f);
+        if (!isScroll)
+            return;
+
+         
+
+        for (int i =0; i< ColorPageConfig.Length;i++)
+        {
+
+          
+                ColorPageConfig[i].Check();
+            }
+               
+           
+          
+        
+    }
 
 }
