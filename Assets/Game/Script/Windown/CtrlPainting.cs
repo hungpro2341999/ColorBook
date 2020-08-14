@@ -147,6 +147,7 @@ public class CtrlPainting : MonoBehaviour
         home.GetTabMyArt().GetTabShared().AddToInforImageToDisk(CacheToPaint.PathSave.uniqueId, CacheToPaint.PathSave.categories);
 
     }
+    
    
     
 }
