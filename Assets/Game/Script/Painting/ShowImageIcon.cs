@@ -80,33 +80,34 @@ public class ShowImageIcon : MonoBehaviour
             if (Show)
             {
               
-                Anim.SetBool("Load1", true);
+            //  //  Anim.SetBool("Load1", true);
                 Visible();
-                time += Time.deltaTime;
-                if(time>2f)
-                {
-                    IsShowStart = true;
-                }
+            //    time += Time.deltaTime;
+            //    if(time>2f)
+            //    {
+            //        IsShowStart = true;
+            //    }
             }
             else
             {
-                time = 0;
+            //    time = 0;
                 UnVisible();
             }
         }
         else
         {
+         //   Visible();
             Show = (TabCatogories.LeftPos < transform.position.x && transform.position.x < TabCatogories.RightPos);
-            if (Show)
+           if (Show)
             {
-              
-                Anim.SetBool("Load2", true);
+
+            //  //  Anim.SetBool("Load2", true);
                 Visible();
 
             }
             else
             {
-                UnVisible();
+              UnVisible();
             }
         }
       

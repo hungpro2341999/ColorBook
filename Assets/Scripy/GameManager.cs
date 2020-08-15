@@ -16,8 +16,9 @@ public class GameManager : MonoBehaviour
 
     public bool Loading = false;
     public Transform TrsLoading;
-   
-   
+    public Transform TrsConnectInternet;
+
+
     private void Awake()
     {
        
@@ -47,7 +48,17 @@ public class GameManager : MonoBehaviour
             {
                 PlayerPrefs.DeleteAll();
             }
-        
+        bool connect = (Application.internetReachability == NetworkReachability.NotReachable);
+        if(connect)
+        {
+            TrsConnectInternet.gameObject.SetActive(true);
+        }
+        else
+        {
+            TrsConnectInternet.gameObject.SetActive(false);
+        }
+       
+
     }
     public void OpenWindown(Windown win)
     {

@@ -11,6 +11,7 @@ public class PaintingLayer : MonoBehaviour
 
 	public Texture Boreder;
 	public TempLayer TemPlayer;
+	public OutlineLayer outline;
 	[SerializeField]
 	public CtrlPainting SourcePainting;
 	public float width;
@@ -123,21 +124,25 @@ public class PaintingLayer : MonoBehaviour
 		
 	
 		TemPlayer.Init();
+		outline.Init();
 		colorTemp = ((Texture2D)material.mainTexture).GetPixels();
 		for(int i=0;i<colorTemp.Length;i++)
 		{
 			colorTemp[i] = new Color(0, 0, 0, 0);
 		}
+
+
 		colorReset = colorTemp;
 		TemPlayer.SetTempText(colorTemp,Vector3.zero,false);
 		textureBorder = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
-		textureBorder = duplicateTexture(textureBorder);
-	
-	     textureBorder.SetPixels(GetBorder());
 
-		textureBorder.Apply();
 
-		TemPlayer.SetTempText(GetBorder(), Vector3.zero, false);
+
+
+
+		outline.SetTexture(GetBorder());
+
+		TemPlayer.SetTempText(colorTemp, Vector3.zero, false);
 	}
 
 
@@ -167,7 +172,8 @@ public class PaintingLayer : MonoBehaviour
 	{
 
 
-
+		if (!TemPlayer.DoneFloodFill)
+			return;
 		if (Input.GetMouseButtonDown(0))
 		{
 			
@@ -175,13 +181,22 @@ public class PaintingLayer : MonoBehaviour
 			if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
 				return;
 			colorTemp = colorReset;
-			TemPlayer.StartFloodFill();
+			
 			
 			Vector3 realPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			float perX = Mathf.Abs(-GetComponent<BoxCollider>().size.x / 2 - realPos.x) / GetComponent<BoxCollider>().size.x;
 			float perY = Mathf.Abs((-GetComponent<BoxCollider>().size.y / 2 - realPos.y) / GetComponent<BoxCollider>().size.y);
 			Debug.Log(perX + "  " + perY);
 
+			Debug.Log(ColorPainting+"  "+ ((Texture2D)material.mainTexture).GetPixel((int)(perX * width), (int)(perY * height)));
+			if (ColorPainting == ((Texture2D)material.mainTexture).GetPixel((int)(perX * width), (int)(perY * height)))
+			{
+				Debug.Log("isPainted");
+				return;
+			}
+
+
+			TemPlayer.StartFloodFill();
 			FloodFillBorder((Texture2D)material.mainTexture, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1), Input.mousePosition);
 
 
@@ -248,10 +263,7 @@ public class PaintingLayer : MonoBehaviour
 	}
 
 
-	public void TempLayer()
-	{
-
-	}
+	
 
 	string SaveDirectory
 	{
@@ -321,10 +333,13 @@ public class PaintingLayer : MonoBehaviour
 		{
 			Destroy(gameObject.GetComponent<BoxCollider>());
 		}
+		
 	}
 	
 	 public void FloodFillBorder(Texture2D targetTexture, Color[] aTex, int aX, int aY, Color aFillColor, Color aBorderColor, Vector3 mousePosition)
 	{
+		TempLayer.PixelPanit = 0;
+
 		int w = targetTexture.width;
 		int h = targetTexture.height;
 		Color[] colors = targetTexture.GetPixels();
@@ -342,8 +357,10 @@ public class PaintingLayer : MonoBehaviour
 				
 				if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
 					break;
+				TempLayer.PixelPanit++;
 				colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
+				
 				checkedPixels[i + current.y * w] = 1;
 				if (current.y + 1 < h)
 				{
@@ -363,6 +380,7 @@ public class PaintingLayer : MonoBehaviour
 				colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
 				checkedPixels[i + current.y * w] = 1;
+				TempLayer.PixelPanit++;
 				if (current.y + 1 < h)
 				{
 					if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
@@ -387,4 +405,39 @@ public class PaintingLayer : MonoBehaviour
 		public Point(short aX, short aY) { x = aX; y = aY; }
 		public Point(int aX, int aY) : this((short)aX, (short)aY) { }
 	}
-}
+
+
+
+	//void floodFillUtil(int screen[][N], int x, int y, int prevC, int newC)
+	//{
+	//	// Base cases 
+	//	if (x < 0 || x >= M || y < 0 || y >= N)
+	//		return;
+	//	if (screen[x][y] != prevC)
+	//		return;
+	//	if (screen[x][y] == newC)
+	//		return;
+
+	//	// Replace the color at (x, y) 
+	//	screen[x][y] = newC;
+
+	//	// Recur for north, east, south and west 
+	//	floodFillUtil(screen, x + 1, y, prevC, newC);
+	//	floodFillUtil(screen, x - 1, y, prevC, newC);
+	//	floodFillUtil(screen, x, y + 1, prevC, newC);
+	//	floodFillUtil(screen, x, y - 1, prevC, newC);
+	//}
+
+	//// It mainly finds the previous color on (x, y) and 
+	//// calls floodFillUtil() 
+	//void floodFill(int screen[][N], int x, int y, int newC)
+	//{
+	//	int prevC = screen[x][y];
+	//	floodFillUtil(screen, x, y, prevC, newC);
+	//}
+
+	// Driver program to test above function 
+	
+} 
+
+

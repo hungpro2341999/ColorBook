@@ -11,11 +11,12 @@ public class TempLayer : MonoBehaviour
     public Transform Privort;
     public Texture2D tex;
     public float posCurr;
-    public bool DoneFloodFill;
+    public  bool DoneFloodFill = true;
     public float Speed;
     public float max = 1000;
     public float SpeedStart;
-    public float SpeedSpeed;
+    public static float PixelPanit;
+    public float totalPixel;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -45,7 +46,7 @@ public class TempLayer : MonoBehaviour
         
         tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
          tex = duplicateTexture(tex);
-       
+        SpeedStart = 0;
         gameObject.SetActive(false);
 
     }
@@ -70,20 +71,27 @@ public class TempLayer : MonoBehaviour
      
         tex.SetPixels(color);
 
+        totalPixel = (int)CtrlPainting.Ins.Width* (int)CtrlPainting.Ins.Height;
+
         tex.Apply();
         Img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
         Img.SetNativeSize();
 
+      //  PixelPanit = totalPixel - PixelPanit;
+        max = PixelPanit * 0.009f;
+
     }
     public void PlayAimPaint()
     {
-        SpeedStart = Mathf.MoveTowards(SpeedStart, Speed, Time.deltaTime*SpeedSpeed);
+        SpeedStart += Time.deltaTime * Speed;
+      
         RectTransform Rect = transform.GetChild(0).GetComponent<RectTransform>();
-        posCurr = Mathf.MoveTowards(posCurr, max, Time.deltaTime *  SpeedStart);
+        posCurr += SpeedStart*3;
         Rect.sizeDelta = new Vector2(posCurr,posCurr);
         if(posCurr >= max)
         {
-            DoneFloodFill = true;
+            SpeedStart = 0;
+           DoneFloodFill = true;
             Apply();
         }
     }

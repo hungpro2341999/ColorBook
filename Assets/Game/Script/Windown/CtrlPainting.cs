@@ -12,6 +12,7 @@ public class CtrlPainting : MonoBehaviour
   
     public PaintingLayer Paint;
     public CtrlCameraZoom CameraZoom;
+   
     public float Width;
     public float Height;
     public Text T_Complete;

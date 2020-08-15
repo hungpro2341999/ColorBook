@@ -12,9 +12,14 @@ public class Categories : MonoBehaviour
     public int LimitShowStart;
     public bool isScroll;
     public ScrollRect Scroll;
-
+    public RectTransform Rect;
+    public Transform Visible;
+ 
     // Start is called before the first frame update
-
+    private void Start()
+    {
+        Rect = GetComponent<RectTransform>();
+    }
     public void OnDrag()
     {
         isScroll = true;
@@ -189,5 +194,16 @@ public class Categories : MonoBehaviour
           
         
     }
+
+    public bool isVisible()
+    {
+        if(TabCatogories.TopPos>=Rect.position.y && TabCatogories.BottomPos<=Rect.position.y)
+        {
+            return true;
+        }
+
+        return false;
+    }
+   
 
 }
