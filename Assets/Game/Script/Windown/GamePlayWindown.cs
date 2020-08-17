@@ -7,6 +7,7 @@ public class GamePlayWindown : Windown
    
     public override void Event_Open()
     {
+      
         GameManager.Ins.UI_General.gameObject.SetActive(false);
     }
 
@@ -17,13 +18,18 @@ public class GamePlayWindown : Windown
 
     public void BackToHome()
     {
-      StartCoroutine(GameManager.Ins.StartLoading(() => { GameManager.Ins.OpenWindown(TypeWindown.Home); }, LoadBack));
+        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
+        Invoke("StartBackHome", 0.1f);
+    }
+    public void StartBackHome()
+    {
+        StartCoroutine(GameManager.Ins.StartLoading(() => { GameManager.Ins.OpenWindown(TypeWindown.Home); }, LoadBack));
     }
     public override void Event_Close()
     {
-      
 
-
+       
+        CtrlPainting.Ins.Paint.SaveImg();
         //var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
         //home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(CtrlPainting.Ins.CacheToPaint.PathSave.uniqueId, CtrlPainting.Ins.CacheToPaint.PathSave.categories);
 

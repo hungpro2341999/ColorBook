@@ -46,6 +46,10 @@ public class LoadStyleImage : Editor
         GUILayout.Space(5);
       
         GUILayout.BeginHorizontal();
+        if (GUILayout.Button("LoalColor", buttonStyle))
+        {
+            GameObject.Find("ColorGame").GetComponent<InstanceColor>().Init();
+        }
         if (GUILayout.Button("LoalPool", buttonStyle))
         {
             GameObject.Find("SellAllTab").GetComponent<WindownSeeAll>().Init();
@@ -105,7 +109,7 @@ public class LoadStyleImage : Editor
 
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Basic";
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
-                ctrl.categories[0].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
+                ctrl.categories[0].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
             }
 
@@ -187,7 +191,7 @@ public class LoadStyleImage : Editor
 
 
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
-                ctrl.categories[1].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
+                ctrl.categories[1].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().LoadIcon();
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cartoon";
@@ -268,11 +272,10 @@ public class LoadStyleImage : Editor
             {
                 var a = Instantiate(Obj, parent);
 
-                a.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
-                ctrl.categories[2].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
-
-                a.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
-                a.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cat";
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                ctrl.categories[2].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cat";
             }
 
 
@@ -355,7 +358,7 @@ public class LoadStyleImage : Editor
                 var a = Instantiate(Obj, parent);
 
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
-                ctrl.categories[3].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
+                ctrl.categories[3].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Editor's choice";
 
@@ -439,9 +442,260 @@ public class LoadStyleImage : Editor
                 var a = Instantiate(Obj, parent);
 
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
-                ctrl.categories[4].ListPainting.Add(a.transform.GetChild(0).GetComponent<Image>());
+                ctrl.categories[4].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Human";
+            }
+
+
+
+        }
+        index++;
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.Label("Mandalas");
+        GUILayout.Space(20);
+
+        GUILayout.BeginHorizontal();
+
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.Space(5);
+
+        GUILayout.BeginHorizontal();
+
+
+        if (GUILayout.Button("AddMandalas", buttonStyle))
+        {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Mandalas");
+
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
+
+
+            var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/MandalasAsset");
+
+
+            for (int i = 0; i < Asset.Count; i++)
+            {
+                Asset[i].UniqueId = Images[i].name;
+
+                Asset[i].outlineTexture = Images[i].texture;
+                EditorUtility.SetDirty(Asset[i]);
+
+            }
+            EditorUtility.SetDirty(target);
+
+        }
+        if (GUILayout.Button("AddMandalasToGame", buttonStyle))
+        {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Mandalas");
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
+            var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
+            ctrl.categories[5].NameCategories = "Mandalas";
+
+            var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/MandalasAsset");
+            var Obj = GameObject.Find("GameMananger").GetComponent<DataMananger>().CategoriesPerb;
+            var parent = GameObject.Find("Mandalas").transform;
+            ctrl.categories[5].ListPainting = new List<Image>();
+            for (int i = 0; i < Asset.Count; i++)
+            {
+                var a = Instantiate(Obj, parent);
+
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                ctrl.categories[5].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Mandala";
+            }
+
+
+
+        }
+        index++;
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+
+        GUILayout.Label("Mandalas");
+        GUILayout.Space(20);
+
+        GUILayout.BeginHorizontal();
+
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.Space(5);
+
+        GUILayout.BeginHorizontal();
+
+
+        if (GUILayout.Button("Add Mystic Animals", buttonStyle))
+        {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Mystic Animals");
+
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
+
+
+            var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/Mystic AnimalsAsset");
+
+
+            for (int i = 0; i < Asset.Count; i++)
+            {
+                Asset[i].UniqueId = Images[i].name;
+
+                Asset[i].outlineTexture = Images[i].texture;
+                EditorUtility.SetDirty(Asset[i]);
+
+            }
+            EditorUtility.SetDirty(target);
+
+        }
+        if (GUILayout.Button("Add Mystic Animals ToGame", buttonStyle))
+        {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Mystic Animals");
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
+            var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
+            ctrl.categories[6].NameCategories = "Mystic Animals";
+
+            var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/Mystic AnimalsAsset");
+            var Obj = GameObject.Find("GameMananger").GetComponent<DataMananger>().CategoriesPerb;
+            var parent = GameObject.Find("Mystic Animals").transform;
+            ctrl.categories[6].ListPainting = new List<Image>();
+            for (int i = 0; i < Asset.Count; i++)
+            {
+                var a = Instantiate(Obj, parent);
+
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                ctrl.categories[6].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Mystic Animals";
+            }
+
+
+
+        }
+        index++;
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.EndHorizontal();
+
+     
+
+        GUILayout.Label("Mandalas");
+        GUILayout.Space(20);
+
+        GUILayout.BeginHorizontal();
+
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.Space(5);
+
+        GUILayout.BeginHorizontal();
+
+
+        if (GUILayout.Button("Add Nature", buttonStyle))
+        {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Nature");
+
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
+
+
+            var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/NatureAsset");
+
+
+            for (int i = 0; i < Asset.Count; i++)
+            {
+                Asset[i].UniqueId = Images[i].name;
+
+                Asset[i].outlineTexture = Images[i].texture;
+                EditorUtility.SetDirty(Asset[i]);
+
+            }
+            EditorUtility.SetDirty(target);
+
+        }
+        if (GUILayout.Button("Add Nature ToGame", buttonStyle))
+        {
+            List<Sprite> Images = new List<Sprite>();
+            var Paint = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Resources/Nature");
+
+            for (int i = 0; i < Paint.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Images.Add(Paint[i]);
+                }
+            }
+
+            var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
+            ctrl.categories[7].NameCategories = "Nature";
+
+            var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/NatureAsset");
+            var Obj = GameObject.Find("GameMananger").GetComponent<DataMananger>().CategoriesPerb;
+            var parent = GameObject.Find("Nature").transform;
+            ctrl.categories[7].ListPainting = new List<Image>();
+            for (int i = 0; i < Asset.Count; i++)
+            {
+                var a = Instantiate(Obj, parent);
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
+                ctrl.categories[7].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
+                a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Nature";
             }
 
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CtrlCameraZoom : MonoBehaviour
 {
-
+    public float speedScroll = 100;
     public Camera Camera { get; private set; }
 
 
@@ -56,8 +56,13 @@ public class CtrlCameraZoom : MonoBehaviour
     public float zoomOutMax = 8;
 
     // Update is called once per frame
-    void Update()
+    
+    void LateUpdate()
     {
+        if (IsClickUI.IsClick)
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -82,7 +87,7 @@ public class CtrlCameraZoom : MonoBehaviour
             Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Camera.main.transform.position += direction;
         }
-        zoom(Input.GetAxis("Mouse ScrollWheel"));
+        zoom(Input.GetAxis("Mouse ScrollWheel")*speedScroll);
     }
 
     void zoom(float increment)

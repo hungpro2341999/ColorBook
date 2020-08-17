@@ -51,7 +51,10 @@ public class TabCompleted : Tab
         {
          
             var source = GetPaintes();
-           
+            if (source.Count == 0)
+            {
+                return;
+            }
             foreach (var painted in source)
             {
                 ListUnique.Add(new PathPainted(painted.nameCategories,painted.unique,painted.unique));
@@ -90,8 +93,8 @@ public class TabCompleted : Tab
             a.Load(file.nameCategories, file.unique, path);
 
             paint.Add(a);
-         
 
+           
 
             if (tex.LoadImage(File.ReadAllBytes(Path.Combine(SaveFilePath, (file.unique + ".jpg")))))
             {
@@ -105,11 +108,6 @@ public class TabCompleted : Tab
                     Debug.Log(width + "  " + height);
                     a.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
                 }
-
-               
-
-
-
 
 
             }
@@ -238,7 +236,17 @@ public class TabCompleted : Tab
     public void Remove(Painted painted)
     {
         var paint = GetPaintes();
-        paint.Remove(painted);
+        for(int i=0;i<paint.Count;i++)
+        {
+            if(painted.unique == paint[i].unique)
+            {
+                paint.Remove(paint[i]);
+                Debug.Log("Remove");
+                break;
+
+            }
+        }
+        Debug.Log(GetPaintes().ToString());
         ApplySave(paint);
     }
 

@@ -20,13 +20,11 @@ public class CompleteWindown :Windown
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Load();
-        }
+        
     }
     public override void Event_Open()
     {
+        GameManager.Ins.isGamePause = true;
         Texture2D tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.RGB24, false);
         var mainTexture = (Texture2D)CtrlPainting.Ins.Paint.material.mainTexture;
 
@@ -37,6 +35,10 @@ public class CompleteWindown :Windown
         img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
         img.SetNativeSize();
     }
+    public override void Event_Close()
+    {
+        GameManager.Ins.isGamePause = false;
+    }
     public void Load()
     {
 
@@ -45,15 +47,26 @@ public class CompleteWindown :Windown
 
     public void SaveToCompleted()
     {
-
-     StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToCompleted(); }));
+        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
+        Invoke("StartSaveToCompleted", 0.5f);
 
 
     }
+
+    public void StartSaveToCompleted()
+    {
+        StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToCompleted(); }));
+    }
     public void SaveToShared()
     {
-      StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToShared(); }));
-        
+        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
+        Invoke("StartSaveToShared", 0.5f);
+
+    }
+
+    public void StartSaveToShared()
+    {
+        StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToShared(); }));
     }
     public void Continue()
     {
@@ -62,5 +75,10 @@ public class CompleteWindown :Windown
     public void Back()
     {
         GameManager.Ins.CloseSingleWindown(TypeWindown.Completed);
+    }
+
+    public void ContinuePaint()
+    {
+        GameManager.Ins.OpenWindown(TypeWindown.Home);
     }
 }

@@ -20,7 +20,7 @@ public class Paint : MonoBehaviour
 
     public void DeletePaint()
     {
-        
+        Delete();
     }
 
     public void ResetPaint()
@@ -51,12 +51,54 @@ public class Paint : MonoBehaviour
 
       
     }
-    public void OpenGameWindow()
+    public void OpenGameWindown()
+    {
+
+        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
+        Invoke("StartLoading", 0.1f);
+
+    }
+
+    public void StartLoading()
     {
 
         StartCoroutine(GameManager.Ins.StartLoading(() => { GameManager.Ins.OpenWindown(TypeWindown.Painting); }, LoadPainting));
-
-
+    }
+    public void StartDelete()
+    {
+        StartCoroutine(GameManager.Ins.StartLoading(() => {}, Delete));
+    }
+    public void Delete()
+    {
+        if (File.Exists(PathPainting))
+        {
+            File.Delete(PathPainting);
+        }
+        var home = GameManager.Ins.GetHome();
+        
+        if (typeLocal == "InProcess")
+        {
+            var w = home.tabSaveImg.GetTabInProcess();
+            w.Remove(new TabCompleted.Painted(unique, categories));
+            w.paint.Remove(this);
+            Destroy(gameObject);
+        }
+        else if(typeLocal == "Completed")
+        {
+            var w = home.tabSaveImg.GetTabCompleted();
+            w.Remove(new TabCompleted.Painted(unique, categories));
+            w.paint.Remove(this);
+            Destroy(gameObject);
+        }
+        else
+        {
+            var w = home.tabSaveImg.GetTabShared();
+            w.Remove(new TabCompleted.Painted(unique, categories));
+            w.paint.Remove(this);
+            Destroy(gameObject);
+        }
+     
+       
     }
 
     public void LoadPainting()
@@ -87,6 +129,8 @@ public class Paint : MonoBehaviour
 
 
     }
+
+     
 
     public void LoadPaint()
     {

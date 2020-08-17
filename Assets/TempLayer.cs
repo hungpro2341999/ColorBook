@@ -77,8 +77,8 @@ public class TempLayer : MonoBehaviour
         Img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
         Img.SetNativeSize();
 
-      //  PixelPanit = totalPixel - PixelPanit;
-        max = PixelPanit * 0.009f;
+        //  PixelPanit = totalPixel - PixelPanit;
+        max = 1800;
 
     }
     public void PlayAimPaint()
@@ -86,7 +86,7 @@ public class TempLayer : MonoBehaviour
         SpeedStart += Time.deltaTime * Speed;
       
         RectTransform Rect = transform.GetChild(0).GetComponent<RectTransform>();
-        posCurr += SpeedStart*3;
+        posCurr += SpeedStart;
         Rect.sizeDelta = new Vector2(posCurr,posCurr);
         if(posCurr >= max)
         {

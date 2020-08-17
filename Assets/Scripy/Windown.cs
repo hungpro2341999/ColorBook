@@ -9,14 +9,14 @@ public class Windown : MonoBehaviour
 
    
 {
-
+    public bool isStartClose = false;
     public float timeToClose;
     public Animator Animtion;
    
     public TypeWindown type;
     public void Open()
     {
-        
+        isStartClose = false;
         Event_Open();
         gameObject.SetActive(true);
         if (Animtion == null)
@@ -38,7 +38,7 @@ public class Windown : MonoBehaviour
             Event_Close();
             if (Animtion == null)
             {
-                StartCoroutine(IEClose());
+                StartClose(0.8f);
             }
             else
             {
@@ -49,13 +49,27 @@ public class Windown : MonoBehaviour
 
     }
 
+    private void LateUpdate()
+    {
+       if(isStartClose)
+        if(timeToClose<0)
+        {
+            gameObject.SetActive(false);
+                isStartClose = false;
+        }
+        else
+        {
+            timeToClose -= Time.deltaTime;
+        }
+    }
     public void UnActive()
     {
         gameObject.SetActive(false);
     }
-    IEnumerator IEClose()
+    void StartClose(float time)
     {
-        yield return new WaitForSeconds(timeToClose);
+        isStartClose = true;
+        timeToClose = time;
         gameObject.SetActive(false);
     }
     public virtual void Event_Open()

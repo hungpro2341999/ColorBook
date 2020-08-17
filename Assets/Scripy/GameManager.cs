@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Ins;
     public bool isGameOver = false;
     public bool isGamePause = false;
-
+    public bool isLoading = false;
+    public bool isConnectInternet = false;
     public Transform UI_General;
     public Transform UI_GamePlay;
     public CtrlPainting Ctrl;
@@ -148,15 +149,16 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator StartLoading(System.Action ActionEnd,System.Action ActionLoading)
     {
-        TrsLoading.gameObject.SetActive(true);
+        isLoading = true;
         ActionLoading();
        
         Loading = true;
        
 
-         yield return new WaitForSeconds(2);
+         yield return new WaitForSeconds(0.5f);
         TrsLoading.gameObject.SetActive(false);
 
+        isLoading = false;
         if (ActionEnd != null)
         {
             ActionEnd();

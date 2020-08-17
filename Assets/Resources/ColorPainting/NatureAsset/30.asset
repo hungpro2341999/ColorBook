@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8820b1d2e7c56fa4f8625365d4108cc5, type: 3}
   m_Name: 30
   m_EditorClassIdentifier: 
-  UniqueId: 
+  UniqueId: 267
   startImagePath: 
-  outlineTexture: {fileID: 0}
+  outlineTexture: {fileID: 2800000, guid: 4ccc6ff124d6d9744b130a7f51d02da6, type: 3}
   regionTexture: {fileID: 0}
