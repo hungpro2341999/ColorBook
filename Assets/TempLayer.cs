@@ -53,7 +53,7 @@ public class TempLayer : MonoBehaviour
     public void SetTempText(Color[] color,Vector3 posCenter,bool Active)
     {
 
-
+        
         gameObject.SetActive(Active);
 
        
@@ -73,10 +73,11 @@ public class TempLayer : MonoBehaviour
 
         totalPixel = (int)CtrlPainting.Ins.Width* (int)CtrlPainting.Ins.Height;
 
-        tex.Apply();
-        Img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+       tex.Apply();
+        
+        Img.overrideSprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
         Img.SetNativeSize();
-
+       
         //  PixelPanit = totalPixel - PixelPanit;
         max = 1800;
 
@@ -90,6 +91,8 @@ public class TempLayer : MonoBehaviour
         Rect.sizeDelta = new Vector2(posCurr,posCurr);
         if(posCurr >= max)
         {
+           //tex.SetPixels(CtrlPainting.Ins.Paint.colorReset);
+           // tex.Apply()
             SpeedStart = 0;
            DoneFloodFill = true;
             Apply();
@@ -108,6 +111,7 @@ public class TempLayer : MonoBehaviour
     }
     public void StartFloodFill()
     {
+        
         RectTransform Rect = transform.GetChild(0).GetComponent<RectTransform>();
         posCurr = 0;
         DoneFloodFill = false;

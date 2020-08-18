@@ -174,7 +174,7 @@ public class Paint : MonoBehaviour
     {
 
 
-        File.WriteAllBytes(_fullPath, _texture.EncodeToJPG());
+        File.WriteAllBytes(_fullPath, _texture.EncodeToPNG());
       
 
         Debug.Log("Kb was saved as: " + _fullPath);

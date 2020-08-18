@@ -527,7 +527,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7765884519482709744}
-        m_MethodName: OpenGameWindow
+        m_MethodName: OpenGameWindown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -620,6 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7b4ddd8a2881e4e97ae1ad86f9407c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isChangeCategories: 0
   PageColorPainting: {fileID: 0}
   categories: 
   unique: 

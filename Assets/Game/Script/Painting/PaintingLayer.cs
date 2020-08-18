@@ -33,8 +33,10 @@ public class PaintingLayer : MonoBehaviour
 
 	public string PathSave;
 	private Color[] colorTemp;
-	private Color[] colorReset;
+	[HideInInspector]
+    public  Color[] colorReset;
 	public Texture2D textureBorder;
+	public Vector2 TopPixel = new Vector2(9999, 0), BottomPixel = new Vector2(0,99999);
 	public void Init()
 	{
 		loading = false;
@@ -136,7 +138,7 @@ public class PaintingLayer : MonoBehaviour
 
 
 		colorReset = colorTemp;
-		TemPlayer.SetTempText(colorTemp,Vector3.zero,false);
+	
 		textureBorder = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
 
 
@@ -183,7 +185,7 @@ public class PaintingLayer : MonoBehaviour
 			else
 			{
 				loading = false;
-			  //	SaveImg();
+			  	SaveImg();
 
 			}
 		}
@@ -207,7 +209,7 @@ public class PaintingLayer : MonoBehaviour
 			RaycastHit hit;
 			if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
 				return;
-			//colorTemp = colorReset;
+		   
 			
 			
 			Vector3 realPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -223,7 +225,8 @@ public class PaintingLayer : MonoBehaviour
 				return;
 			}
 			Debug.Log("Painted");
-
+			
+		
 			TemPlayer.StartFloodFill();
 			FloodFillBorder((Texture2D)material.mainTexture, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1), Input.mousePosition);
 
@@ -277,7 +280,7 @@ public class PaintingLayer : MonoBehaviour
 	{
 
 
-		File.WriteAllBytes(_fullPath,_texture.EncodeToJPG());
+		File.WriteAllBytes(_fullPath,_texture.EncodeToPNG());
 		yield return new WaitForSeconds(0);
 
 		Debug.Log("Kb was saved as: " + _fullPath);
@@ -318,7 +321,7 @@ public class PaintingLayer : MonoBehaviour
 	{
 		get
 		{
-			return Path.Combine(SaveDirectory, SourcePainting.PageConfig.UniqueId + ".jpg");
+			return Path.Combine(SaveDirectory, SourcePainting.PageConfig.UniqueId + ".png");
 		}
 	}
 	string SaveCompleted
@@ -340,7 +343,7 @@ public class PaintingLayer : MonoBehaviour
 	{
 		get
 		{
-			return Path.Combine(SaveCompleted, SourcePainting.PageConfig.UniqueId + ".jpg");
+			return Path.Combine(SaveCompleted, SourcePainting.PageConfig.UniqueId + ".png");
 		}
 	}
 	
@@ -358,7 +361,7 @@ public class PaintingLayer : MonoBehaviour
 				Directory.CreateDirectory(dir);
 			}
 
-			return Path.Combine(dir, SourcePainting.PageConfig.UniqueId + ".jpg");
+			return Path.Combine(dir, SourcePainting.PageConfig.UniqueId + ".png");
 		}
 	}
 	private void OnDisable()
@@ -372,6 +375,7 @@ public class PaintingLayer : MonoBehaviour
 	
 	 public void FloodFillBorder(Texture2D targetTexture, Color[] aTex, int aX, int aY, Color aFillColor, Color aBorderColor, Vector3 mousePosition)
 	{
+		//TopPixel = new Vector2(9999, 0); BottomPixel = new Vector2(0, 99999);
 		TempLayer.PixelPanit = 0;
 
 		int w = targetTexture.width;
@@ -382,7 +386,7 @@ public class PaintingLayer : MonoBehaviour
 		Color refCol = aBorderColor;
 		Queue<Point> nodes = new Queue<Point>();
 		nodes.Enqueue(new Point(aX, aY));
-		Vector2 MinPixel = Vector2.zero, MaxPixel = Vector2.zero;
+		
 		
 		while(nodes.Count > 0)
 		{
@@ -393,13 +397,14 @@ public class PaintingLayer : MonoBehaviour
 				
 				if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
 					break;
-				MinPixel.x = Mathf.Min(i, MinPixel.x);
-				MinPixel.y = Mathf.Min(i, current.y * w);
+			
 
-				
 				colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
-				
+				//TopPixel.x = Mathf.Min(i, TopPixel.x);
+				//TopPixel.y = Mathf.Max(current.y,TopPixel.y);
+				//BottomPixel.x = Mathf.Max(i, BottomPixel.x);
+				//BottomPixel.y = Mathf.Min(current.y, BottomPixel.y);
 				checkedPixels[i + current.y * w] = 1;
 				if (current.y + 1 < h)
 				{
@@ -417,10 +422,15 @@ public class PaintingLayer : MonoBehaviour
 			{
 				if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
 					break;
+
+				
 				colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
 				checkedPixels[i + current.y * w] = 1;
-				
+				//TopPixel.x = Mathf.Min(i, TopPixel.x);
+				//TopPixel.y = Mathf.Max(current.y, TopPixel.y);
+				//BottomPixel.x = Mathf.Max(i, BottomPixel.x);
+				//BottomPixel.y = Mathf.Min(current.y, BottomPixel.y);
 				if (current.y + 1 < h)
 				{
 					if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
