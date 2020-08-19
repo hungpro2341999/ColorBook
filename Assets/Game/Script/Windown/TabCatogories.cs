@@ -28,10 +28,21 @@ public class TabCatogories : Tab
             categories.Init();
         }
 
-        foreach (var categories in ListCategories)
+        //foreach (var categories in ListCategories)
+        //{
+        //    var visible = categories.isVisible();
+        //    categories.Visible.gameObject.SetActive(visible);
+        //}
+        for (int i = 0; i < ListCategories.Count; i++)
         {
-            var visible = categories.isVisible();
-            categories.Visible.gameObject.SetActive(visible);
+            if (i < 4)
+            {
+                ListCategories[i].Visible.gameObject.SetActive(true);
+            }
+            else
+            {
+                ListCategories[i].Visible.gameObject.SetActive(false);
+            }
         }
     }
 

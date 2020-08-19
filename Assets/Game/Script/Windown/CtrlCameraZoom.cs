@@ -38,7 +38,7 @@ public class CtrlCameraZoom : MonoBehaviour
 
         //   Camera.backgroundColor = Color.white;
         Camera.orthographicSize = canvas.Width * (float)Screen.height / (float)Screen.width * 0.5f;
-        ZoomBounds[0] = Camera.orthographicSize/2;
+        ZoomBounds[0] = Camera.orthographicSize*0.3f;
         ZoomBounds[1] = Camera.orthographicSize;
         ResetZoom();
 
@@ -57,7 +57,7 @@ public class CtrlCameraZoom : MonoBehaviour
         {
             return;
         }
-
+      
         int touch = Input.touchCount;
         switch (touch)
         {
@@ -65,9 +65,11 @@ public class CtrlCameraZoom : MonoBehaviour
 
 
             case 2: // Zooming
+             
                 Debug.Log("Update Camera");
                 StartPichZoom();
-               
+             
+          
                 break;
 
             default:
@@ -84,8 +86,15 @@ public class CtrlCameraZoom : MonoBehaviour
    
     void zoom(float increment)
     {
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - increment,ZoomBounds[0], ZoomBounds[1]);
+      
+        if (increment == 0)
+        {
+            return;
+        }
 
+
+
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - increment, ZoomBounds[0], ZoomBounds[1]);
     }
   
     public void MoveCamera(Vector3 pos)
@@ -117,7 +126,8 @@ public class CtrlCameraZoom : MonoBehaviour
 
             Touch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
             Touch2 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
-            InitPos = (Touch1 + Touch2) / 2;
+            InitPos = new Vector3((Input.GetTouch(0).position.x + Input.GetTouch(1).position.x)/ 2, (Input.GetTouch(0).position.y + Input.GetTouch(1).position.y) / 2,-100);
+            InitPos = Camera.main.ScreenToWorldPoint(InitPos);
             InitPos.z = -100;
 
             newdistance = Vector3.Distance(Touch1, Touch2);
@@ -128,6 +138,8 @@ public class CtrlCameraZoom : MonoBehaviour
         else
         {
             UpdatePinchZoom();
+            setBoundXZCamera(ZoomBounds[1] - Camera.main.orthographicSize);
+            MoveCamera(InitPos);
         }
 
     }
@@ -135,15 +147,14 @@ public class CtrlCameraZoom : MonoBehaviour
     public void UpdatePinchZoom()
     {
      
-        setBoundXZCamera(ZoomBounds[1] - Camera.main.orthographicSize);
-        MoveCamera(InitPos);
+      
+       
         Touch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
         Touch2 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
       
 
-        newdistance = Vector3.Distance(Touch1, Touch2);
-        if ((newdistance !=lastdistance))
-        {
+          newdistance = Vector3.Distance(Touch1, Touch2);
+    
             float offset = newdistance - lastdistance;
             Debug.Log("Zoom");
 
@@ -155,7 +166,7 @@ public class CtrlCameraZoom : MonoBehaviour
 
             lastdistance = newdistance;
 
-        }
+        
 
 
 

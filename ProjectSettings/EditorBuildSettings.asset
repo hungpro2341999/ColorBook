@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Loading.unity
-    guid: 312fb5bc2c79bd143949c7d4a53aa66b
-  - enabled: 1
     path: Assets/Scenes/ColorPainting.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

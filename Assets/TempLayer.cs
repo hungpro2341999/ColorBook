@@ -31,10 +31,7 @@ public class TempLayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            PlayAimPaint();
-        }
+     
         if (!DoneFloodFill)
         {
             PlayAimPaint();
@@ -48,12 +45,14 @@ public class TempLayer : MonoBehaviour
          tex = duplicateTexture(tex);
         SpeedStart = 0;
         gameObject.SetActive(false);
+        Img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+        Img.SetNativeSize();
 
     }
     public void SetTempText(Color[] color,Vector3 posCenter,bool Active)
     {
+        tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
 
-        
         gameObject.SetActive(Active);
 
        
@@ -71,17 +70,16 @@ public class TempLayer : MonoBehaviour
      
         tex.SetPixels(color);
 
-        totalPixel = (int)CtrlPainting.Ins.Width* (int)CtrlPainting.Ins.Height;
-
        tex.Apply();
         
-        Img.overrideSprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
-        Img.SetNativeSize();
+        Img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+       
        
         //  PixelPanit = totalPixel - PixelPanit;
         max = 1800;
 
     }
+    bool load = false;
     public void PlayAimPaint()
     {
         SpeedStart += Time.deltaTime * Speed;
@@ -89,13 +87,23 @@ public class TempLayer : MonoBehaviour
         RectTransform Rect = transform.GetChild(0).GetComponent<RectTransform>();
         posCurr += SpeedStart;
         Rect.sizeDelta = new Vector2(posCurr,posCurr);
+        if(posCurr>=max/2)
+        {
+            if(!load)
+            {
+                Apply();
+                load = true;
+            }
+        }
         if(posCurr >= max)
         {
            //tex.SetPixels(CtrlPainting.Ins.Paint.colorReset);
            // tex.Apply()
             SpeedStart = 0;
            DoneFloodFill = true;
-            Apply();
+           
+
+
         }
     }
 
@@ -106,8 +114,8 @@ public class TempLayer : MonoBehaviour
 
     public void Apply()
     {
-        gameObject.SetActive(false);
-        CtrlPainting.Ins.Paint.Apply();
+      //  gameObject.SetActive(false);
+       StartCoroutine(CtrlPainting.Ins.Paint.Apply());
     }
     public void StartFloodFill()
     {
@@ -116,6 +124,7 @@ public class TempLayer : MonoBehaviour
         posCurr = 0;
         DoneFloodFill = false;
         Rect.sizeDelta = new Vector2(posCurr, posCurr);
+        load = false;
     }
   
     Texture2D duplicateTexture(Texture2D source)

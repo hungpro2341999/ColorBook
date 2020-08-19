@@ -37,6 +37,10 @@ public class PaintingLayer : MonoBehaviour
     public  Color[] colorReset;
 	public Texture2D textureBorder;
 	public Vector2 TopPixel = new Vector2(9999, 0), BottomPixel = new Vector2(0,99999);
+	private void Start()
+	{
+		loading = false;
+	}
 	public void Init()
 	{
 		loading = false;
@@ -73,13 +77,17 @@ public class PaintingLayer : MonoBehaviour
 
 			material.mainTexture = tex;
 			mr.material = material;
+			//outline.Init();
+			//outline.SetTexture(GetBorder());
 			if (gameObject.GetComponent<BoxCollider>() != null)
 			{
 				Destroy(gameObject.GetComponent<BoxCollider>());
 			}
 
 			gameObject.AddComponent<BoxCollider>();
-		
+			outline.Init();
+			outline.SetTexture(GetBorder());
+
 		}
 		else
 		{
@@ -103,11 +111,19 @@ public class PaintingLayer : MonoBehaviour
 			TextureReigion = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
 
 
-
+			Color[] color = CloneTexure2D.GetPixels();
+			for(int i=0;i<color.Length;i++)
+			{
+				color[i] = new Color(1, 1, 1, 1);
+			}
+			CloneTexure2D.SetPixels(color);
+			
 
 			Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, CloneTexure2D);
-			SourcePainting.T_Complete.text += "Copy Texture 1 \n";
-			Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, TextureReigion);
+
+
+			//SourcePainting.T_Complete.text += "Copy Texture 1 \n";
+			//Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, TextureReigion);
 
 
 
@@ -129,22 +145,26 @@ public class PaintingLayer : MonoBehaviour
 		
 	
 		TemPlayer.Init();
-		outline.Init();
+		
 		colorTemp = ((Texture2D)material.mainTexture).GetPixels();
-		for(int i=0;i<colorTemp.Length;i++)
+		colorReset = new Color[colorTemp.Length];
+		for (int i=0;i<colorTemp.Length;i++)
 		{
 			colorTemp[i] = new Color(0, 0, 0, 0);
 		}
 
-
-		colorReset = colorTemp;
+		for (int i = 0; i < colorTemp.Length; i++)
+		{
+			colorReset[i] = new Color(0, 0, 0, 0);
+		}
+	
 	
 		textureBorder = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
 
 
 
 
-
+		outline.Init();
 		outline.SetTexture(GetBorder());
 
 		TemPlayer.SetTempText(colorTemp, Vector3.zero, false);
@@ -185,7 +205,7 @@ public class PaintingLayer : MonoBehaviour
 			else
 			{
 				loading = false;
-			  	SaveImg();
+				StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
 
 			}
 		}
@@ -200,6 +220,9 @@ public class PaintingLayer : MonoBehaviour
 		{
 			return;
 		}
+		int touch = Input.touchCount;
+		if (touch > 1)
+			return;
 
 		if (!TemPlayer.DoneFloodFill)
 			return;
@@ -237,23 +260,24 @@ public class PaintingLayer : MonoBehaviour
 
 			//((Texture2D)material.mainTexture).Apply();
 
-
-		 
 		}
-		
+
 
 		
 
 
 	}
-
+	
 	public void SaveImg()
 	{
-		StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
+		
+	//	StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
 	}
-	public void Apply()
+	public IEnumerator Apply()
 	{
-		((Texture2D)material.mainTexture).Apply(); 
+		
+		((Texture2D)material.mainTexture).Apply();
+		yield return null;
 	}
 
 	Texture2D duplicateTexture(Texture2D source)
@@ -280,7 +304,7 @@ public class PaintingLayer : MonoBehaviour
 	{
 
 
-		File.WriteAllBytes(_fullPath,_texture.EncodeToPNG());
+		File.WriteAllBytes(_fullPath,_texture.EncodeToJPG(100));
 		yield return new WaitForSeconds(0);
 
 		Debug.Log("Kb was saved as: " + _fullPath);
@@ -376,6 +400,7 @@ public class PaintingLayer : MonoBehaviour
 	 public void FloodFillBorder(Texture2D targetTexture, Color[] aTex, int aX, int aY, Color aFillColor, Color aBorderColor, Vector3 mousePosition)
 	{
 		//TopPixel = new Vector2(9999, 0); BottomPixel = new Vector2(0, 99999);
+		colorTemp = colorReset;
 		TempLayer.PixelPanit = 0;
 
 		int w = targetTexture.width;

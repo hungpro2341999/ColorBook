@@ -18,6 +18,7 @@ public class GamePlayWindown : Windown
 
     public void BackToHome()
     {
+        CtrlPainting.Ins.Paint.SaveImg();
         GameManager.Ins.TrsLoading.gameObject.SetActive(true);
         Invoke("StartBackHome", 0.1f);
     }
@@ -29,7 +30,7 @@ public class GamePlayWindown : Windown
     {
 
        
-        CtrlPainting.Ins.Paint.SaveImg();
+      
         //var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
         //home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(CtrlPainting.Ins.CacheToPaint.PathSave.uniqueId, CtrlPainting.Ins.CacheToPaint.PathSave.categories);
 
