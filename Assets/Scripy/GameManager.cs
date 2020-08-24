@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
 
 
-            Application.targetFrameRate = 120;
+            Application.targetFrameRate = 80;
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 PlayerPrefs.DeleteAll();

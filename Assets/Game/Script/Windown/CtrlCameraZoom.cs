@@ -34,10 +34,11 @@ public class CtrlCameraZoom : MonoBehaviour
 
 
         Camera = GetComponent<Camera>();
-       
+
 
         //   Camera.backgroundColor = Color.white;
-        Camera.orthographicSize = canvas.Width * (float)Screen.height / (float)Screen.width * 0.5f;
+     //   Debug.Log("Size : "+CtrlPainting.Ins.Paint.GetComponent<SpriteRenderer>().size.x);
+        Camera.orthographicSize = CtrlPainting.Ins.Paint.GetComponent<BoxCollider>().size.x  * (float)Screen.height / (float)Screen.width * 0.5f;
         ZoomBounds[0] = Camera.orthographicSize*0.3f;
         ZoomBounds[1] = Camera.orthographicSize;
         ResetZoom();
@@ -113,7 +114,7 @@ public class CtrlCameraZoom : MonoBehaviour
     public void setBoundXZCamera(float sizeCam)
     {
         BoundsX = new float[2] { -sizeCam * cache, sizeCam * cache };
-        BoundsY = new float[2] { -100-(sizeCam * cacheY),-100+(sizeCam * cacheY) };
+        BoundsY = new float[2] { -1-(sizeCam * cacheY),-1+(sizeCam * cacheY) };
       
     }
 
@@ -192,7 +193,7 @@ public class CtrlCameraZoom : MonoBehaviour
 
     public void ResetZoom()
     {
-        transform.position = new Vector3(0, -100, -100);
+        transform.position = new Vector3(0, -1, -100);
         Camera.main.orthographicSize = ZoomBounds[1];
     }
 }

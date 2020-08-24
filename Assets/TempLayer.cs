@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PaintCraft.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 public class TempLayer : MonoBehaviour
 {
     public Transform TransImg;
-    public Image Img;
+  
     public Transform Privort;
     public Texture2D tex;
     public float posCurr;
@@ -17,10 +18,13 @@ public class TempLayer : MonoBehaviour
     public float SpeedStart;
     public static float PixelPanit;
     public float totalPixel;
+    public Shader shader;
+    public SpriteRenderer SpriteImg;
     // Start is called before the first frame update
     private void Awake()
     {
-        Img = TransImg.GetComponent<Image>();
+        SpriteImg = GetComponent<SpriteRenderer>();
+  //      Img = TransImg.GetComponent<Image>();
     }
     
     void Start()
@@ -40,43 +44,87 @@ public class TempLayer : MonoBehaviour
 
     public void Init()
     {
-        
-        tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
-         tex = duplicateTexture(tex);
-        SpeedStart = 0;
-        gameObject.SetActive(false);
-        Img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
-        Img.SetNativeSize();
+        //float width = CtrlPainting.Ins.PageConfig.GetSize().x;
+        //float height = CtrlPainting.Ins.PageConfig.GetSize().y;
+        //tex = new Texture2D((int)width, (int)height, TextureFormat.ARGB32, false);
+        //tex = duplicateTexture(tex);
+        //MeshFilter mf = GOUtil.CreateComponentIfNoExists<MeshFilter>(gameObject);
+
+        //Mesh mesh = MeshUtil.CreatePlaneMesh(width, height);
+
+        //mf.mesh = mesh;
+
+        //MeshRenderer mr = GOUtil.CreateComponentIfNoExists<MeshRenderer>(gameObject);
+
+        //Material material = new Material(shader);
+
+        //mr.material = material;
+        //tex.SetPixels(((Texture2D)CtrlPainting.Ins.Paint.material.mainTexture).GetPixels());
+
+        //tex.Apply();
+        //mr.material.mainTexture = tex;
+
+        //
+
+
+
+        tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.RGB24, false);
+        ////tex = duplicateTexture(tex);
+        ////SpeedStart = 0;
+        ////gameObject.SetActive(false);
+        ////tex.SetPixels((CtrlPainting.Ins.Paint.CloneTexure2D).GetPixels());
+        Graphics.CopyTexture(CtrlPainting.Ins.Paint.CloneTexure2D, tex);
+        tex.Apply();
+        GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+
+
+
+
 
     }
-    public void SetTempText(Color[] color,Vector3 posCenter,bool Active)
+    public void SetTempText(Color[] color,Vector3 posCenter,bool Active,bool change)
     {
-        tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
+       
 
         gameObject.SetActive(Active);
 
-       
+
         Privort.transform.position = Camera.main.ScreenToWorldPoint(posCenter);
 
-        Vector3 pos = Privort.transform.localPosition;
-        pos.z = 0;
-        Privort.transform.localPosition = pos;
+        Vector3 pos = Privort.transform.position;
+        pos.z = -1;
+       
+        Privort.transform.position = pos;
 
 
 
-        TransImg.transform.position =  CtrlPainting.Ins.Paint.transform.position;
-      //  Vector3 pos1 = TransImg.transform.localPosition;
-      
-     
-        tex.SetPixels(color);
+        TransImg.transform.position = (Vector3.zero+new Vector3(0,0,-1));
 
-       tex.Apply();
         
-        Img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
-       
-       
-        //  PixelPanit = totalPixel - PixelPanit;
-        max = 1800;
+        if (change)
+        {
+            SpriteImg.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            CtrlPainting.Ins.Paint.SpriteImg.maskInteraction = SpriteMaskInteraction.None;
+           // tex = CtrlPainting.Ins.Paint.CloneTexure2D;
+            Graphics.CopyTexture(CtrlPainting.Ins.Paint.CloneTexure2D, tex);
+            tex.Apply();
+
+
+            SpriteImg.sprite = Sprite.Create(tex, new Rect(0f, 0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100F, 0, SpriteMeshType.FullRect);
+
+            SpriteImg.sortingLayerName = "Layer3";
+
+           
+        }
+        else
+        {
+            SpriteImg.sortingLayerName = "Layer1";
+            SpriteImg.maskInteraction = SpriteMaskInteraction.None;
+            CtrlPainting.Ins.Paint.SpriteImg.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            Apply();
+        }
+
+        max = 80;
 
     }
     bool load = false;
@@ -84,21 +132,24 @@ public class TempLayer : MonoBehaviour
     {
         SpeedStart += Time.deltaTime * Speed;
       
-        RectTransform Rect = transform.GetChild(0).GetComponent<RectTransform>();
+      
         posCurr += SpeedStart;
-        Rect.sizeDelta = new Vector2(posCurr,posCurr);
+        Privort.localScale = new Vector2(posCurr,posCurr);
         if(posCurr>=max/2)
         {
             if(!load)
             {
-                Apply();
+
+               
                 load = true;
             }
         }
         if(posCurr >= max)
         {
-           //tex.SetPixels(CtrlPainting.Ins.Paint.colorReset);
-           // tex.Apply()
+          //  gameObject.SetActive(false);
+         //    Apply();
+            //tex.SetPixels(CtrlPainting.Ins.Paint.colorReset);
+          //  tex.Apply();
             SpeedStart = 0;
            DoneFloodFill = true;
            
@@ -115,15 +166,15 @@ public class TempLayer : MonoBehaviour
     public void Apply()
     {
       //  gameObject.SetActive(false);
-       StartCoroutine(CtrlPainting.Ins.Paint.Apply());
+      CtrlPainting.Ins.Paint.ApplyColor();
     }
     public void StartFloodFill()
     {
         
-        RectTransform Rect = transform.GetChild(0).GetComponent<RectTransform>();
+      //  RectTransform Rect = transform.GetChild(0).GetComponent<RectTransform>();
         posCurr = 0;
         DoneFloodFill = false;
-        Rect.sizeDelta = new Vector2(posCurr, posCurr);
+    //    Rect.sizeDelta = new Vector2(posCurr, posCurr);
         load = false;
     }
   

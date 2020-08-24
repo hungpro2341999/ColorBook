@@ -72,9 +72,9 @@ public class CtrlPainting : MonoBehaviour
         Paint.load = Load;
         PageConfig = Color;
         Init();
-        CameraZoom.Init(this);
+      
         Paint.Init();
-       
+        CameraZoom.Init(this);
 
     }
 
@@ -87,8 +87,9 @@ public class CtrlPainting : MonoBehaviour
         Paint.load = Load;
         PageConfig = Color;
         Init();
-        CameraZoom.Init(this);
+     
         Paint.Init();
+        CameraZoom.Init(this);
     }
     [System.Serializable]
     public class CacheToPainting

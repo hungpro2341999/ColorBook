@@ -18,8 +18,8 @@ public class PaintingLayer : MonoBehaviour
 	public float height;
 	
 
-	Texture2D CloneTexure2D;
-	Texture2D tmpTexture2D;
+	public Texture2D CloneTexure2D;
+	
 	public Material material;
 	public Color ColorPainting;
 	public Texture2D TextureReigion;
@@ -37,52 +37,50 @@ public class PaintingLayer : MonoBehaviour
     public  Color[] colorReset;
 	public Texture2D textureBorder;
 	public Vector2 TopPixel = new Vector2(9999, 0), BottomPixel = new Vector2(0,99999);
+	public bool StartPaint = false;
+	public SpriteRenderer SpriteImg;
+	public bool changeLayer = false;
 	private void Start()
 	{
+		SpriteImg = GetComponent<SpriteRenderer>();
 		loading = false;
 	}
 	public void Init()
 	{
 		loading = false;
-		//shader = Shader.Find("Mobile/Particles/Additive");
+	
 		if (load)
 		{
 
 			PathSave = SourcePainting.CacheToPaint.PathSave.path;
 			width = SourcePainting.PageConfig.GetSize().x;
 			height = SourcePainting.PageConfig.GetSize().y;
-			MeshFilter mf = GOUtil.CreateComponentIfNoExists<MeshFilter>(gameObject);
-			Mesh mesh = MeshUtil.CreatePlaneMesh(width, height);
-
-			mf.mesh = mesh;
-			MeshRenderer mr = GOUtil.CreateComponentIfNoExists<MeshRenderer>(gameObject);
-			material = new Material(shader);
-			CloneTexure2D = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
-			TextureReigion = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
+		
+			CloneTexure2D = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
+			TextureReigion = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
 
 
 
-			Texture2D tex = new Texture2D((int)width, (int)height, TextureFormat.ARGB32, false);
+			
 
 
-			if (tex.LoadImage(File.ReadAllBytes(PathSave)))
+			if (CloneTexure2D.LoadImage(File.ReadAllBytes(PathSave)))
 			{
-				tex.Apply();
+				CloneTexure2D.Apply();
 
 			}
-			tex = duplicateTexture(tex);
+		//	CloneTexure2D = duplicateTexture(CloneTexure2D);
 
 			Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, TextureReigion);
 			colorRegion = SourcePainting.PageConfig.OutlineTexture.GetPixels();
 
-			material.mainTexture = tex;
-			mr.material = material;
-			//outline.Init();
-			//outline.SetTexture(GetBorder());
+			GetComponent<SpriteRenderer>().sprite = Sprite.Create(CloneTexure2D, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+
 			if (gameObject.GetComponent<BoxCollider>() != null)
 			{
 				Destroy(gameObject.GetComponent<BoxCollider>());
 			}
+
 
 			gameObject.AddComponent<BoxCollider>();
 			outline.Init();
@@ -94,21 +92,11 @@ public class PaintingLayer : MonoBehaviour
 
 			width = SourcePainting.PageConfig.GetSize().x;
 			height = SourcePainting.PageConfig.GetSize().y;
-			SourcePainting.T_Complete.text += "GetSize Complete \n";
-			MeshFilter mf = GOUtil.CreateComponentIfNoExists<MeshFilter>(gameObject);
-			SourcePainting.T_Complete.text += "1 \n";
-			Mesh mesh = MeshUtil.CreatePlaneMesh(width, height);
-			SourcePainting.T_Complete.text += "2 \n";
-			mf.mesh = mesh;
-			SourcePainting.T_Complete.text += "3 \n";
-			MeshRenderer mr = GOUtil.CreateComponentIfNoExists<MeshRenderer>(gameObject);
-			SourcePainting.T_Complete.text += "4 \n";
-			material = new Material(shader);
-			//Shader.Find("Mobile/Unlit (Supports Lightmap)")
+		
 			SourcePainting.T_Complete.text += "Create Plane Complete \n";
-			CloneTexure2D = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
+			CloneTexure2D = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
 
-			TextureReigion = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
+			TextureReigion = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
 
 
 			Color[] color = CloneTexure2D.GetPixels();
@@ -117,19 +105,11 @@ public class PaintingLayer : MonoBehaviour
 				color[i] = new Color(1, 1, 1, 1);
 			}
 			CloneTexure2D.SetPixels(color);
-			
+			CloneTexure2D.Apply();
 
 			Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, CloneTexure2D);
 
-
-			//SourcePainting.T_Complete.text += "Copy Texture 1 \n";
-			//Graphics.CopyTexture(SourcePainting.PageConfig.OutlineTexture, TextureReigion);
-
-
-
-			SourcePainting.T_Complete.text += "Copy Texture 2 \n";
-			material.mainTexture = CloneTexure2D;
-			mr.material = material;
+			GetComponent<SpriteRenderer>().sprite = Sprite.Create(CloneTexure2D, new Rect(0f, 0f, CloneTexure2D.width, CloneTexure2D.height), new Vector2(0.5f, 0.5f), 100F, 0, SpriteMeshType.FullRect);
 
 			colorRegion = SourcePainting.PageConfig.OutlineTexture.GetPixels();
 			if(gameObject.GetComponent<BoxCollider>()!=null)
@@ -137,37 +117,19 @@ public class PaintingLayer : MonoBehaviour
 				Destroy(gameObject.GetComponent<BoxCollider>());
 			}
 			
-			gameObject.AddComponent<BoxCollider>(); 
-		
+			gameObject.AddComponent<BoxCollider>();
+			outline.Init();
+			outline.SetTexture(GetBorder());
 
 		}
-		((Texture2D)material.mainTexture).Apply();
+	  
 		
 	
 		TemPlayer.Init();
 		
-		colorTemp = ((Texture2D)material.mainTexture).GetPixels();
-		colorReset = new Color[colorTemp.Length];
-		for (int i=0;i<colorTemp.Length;i++)
-		{
-			colorTemp[i] = new Color(0, 0, 0, 0);
-		}
-
-		for (int i = 0; i < colorTemp.Length; i++)
-		{
-			colorReset[i] = new Color(0, 0, 0, 0);
-		}
 	
-	
-		textureBorder = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
-
-
-
-
-		outline.Init();
-		outline.SetTexture(GetBorder());
-
-		TemPlayer.SetTempText(colorTemp, Vector3.zero, false);
+	//	TemPlayer.SetTempText(CloneTexure2D.GetPixels(), Vector3.zero, false,(changeLayer = !changeLayer));
+		StartPaint = false;
 	}
 
 
@@ -193,6 +155,19 @@ public class PaintingLayer : MonoBehaviour
 		return colors;
 
 	}
+	bool isWhite(Color color)
+	{
+		float threshold = 1f;
+		Color _colorHolder = new Color(0, 0, 0, 1);
+		bool r = Mathf.Abs(color.r - _colorHolder.r) < threshold;
+		bool g = Mathf.Abs(color.g - _colorHolder.g) < threshold;
+		bool b = Mathf.Abs(color.b - _colorHolder.b) < threshold;
+		if (r && g && b)
+			return true;
+		else
+			return false;
+	}
+
 
 	private void Update()
 	{
@@ -205,7 +180,7 @@ public class PaintingLayer : MonoBehaviour
 			else
 			{
 				loading = false;
-				StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
+			//	StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
 
 			}
 		}
@@ -220,15 +195,37 @@ public class PaintingLayer : MonoBehaviour
 		{
 			return;
 		}
-		int touch = Input.touchCount;
-		if (touch > 1)
-			return;
+		
 
 		if (!TemPlayer.DoneFloodFill)
 			return;
+
 		if (Input.GetMouseButtonDown(0))
 		{
-			
+			StartPaint = true;
+
+		}
+
+		if(StartPaint)
+		{
+			int touch = Input.touchCount;
+			if (touch > 1)
+			{
+				StartPaint = false;
+				return; 
+			}
+		
+				
+		}
+
+		if (Input.GetMouseButtonUp(0))
+		{
+
+			if (!StartPaint)
+			{
+				return;
+			}
+			StartPaint = false;
 			RaycastHit hit;
 			if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
 				return;
@@ -240,8 +237,7 @@ public class PaintingLayer : MonoBehaviour
 			float perY = Mathf.Abs((-GetComponent<BoxCollider>().size.y / 2 - realPos.y) / GetComponent<BoxCollider>().size.y);
 			Debug.Log(perX + "  " + perY);
 
-			Color colorPaint = ((Texture2D)material.mainTexture).GetPixel((int)(perX * width), (int)(perY * height));
-			Debug.Log(colorPaint + "  " + ColorPainting);
+			Color colorPaint = (CloneTexure2D).GetPixel((int)(perX * width), (int)(perY * height));
 			if (ColorPainting.a == colorPaint.a && ColorPainting.b == colorPaint.b && ColorPainting.g==colorPaint.g && colorPaint.r == ColorPainting.r)
 			{
 				Debug.Log("isPainted");
@@ -251,10 +247,10 @@ public class PaintingLayer : MonoBehaviour
 			
 		
 			TemPlayer.StartFloodFill();
-			FloodFillBorder((Texture2D)material.mainTexture, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1), Input.mousePosition);
-
+			FloodFillBorder(CloneTexure2D, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1), Input.mousePosition);
+		//	CloneTexure2D.Apply();
 			freetime = 0;
-			TemPlayer.SetTempText(colorTemp, Input.mousePosition,true);
+			TemPlayer.SetTempText(CloneTexure2D.GetPixels(), Input.mousePosition,true, (changeLayer = !changeLayer));
 			loading = true;
 
 
@@ -267,17 +263,24 @@ public class PaintingLayer : MonoBehaviour
 
 
 	}
+	public void ApplyColor()
+	{
+		CloneTexure2D.Apply();
+		//	GetComponent<SpriteRenderer>().sprite = Sprite.Create(CloneTexure2D, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+		GetComponent<SpriteRenderer>().sprite = Sprite.Create(CloneTexure2D, new Rect(0f, 0f, CloneTexure2D.width, CloneTexure2D.height), new Vector2(0.5f, 0.5f), 100F, 0, SpriteMeshType.FullRect);
+	}
 	
 	public void SaveImg()
 	{
 		
-	//	StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, PathSave));
+     //	StartCoroutine(SaveTextureAsPNG((Texture2D)CloneTexure2D, PathSave));
+		SaveTextureAsPNGNow((Texture2D)CloneTexure2D, PathSave);
 	}
-	public IEnumerator Apply()
+	public void Apply()
 	{
 		
 		((Texture2D)material.mainTexture).Apply();
-		yield return null;
+	
 	}
 
 	Texture2D duplicateTexture(Texture2D source)
@@ -310,16 +313,27 @@ public class PaintingLayer : MonoBehaviour
 		Debug.Log("Kb was saved as: " + _fullPath);
 	}
 
+	public void SaveTextureAsPNGNow(Texture2D _texture, string _fullPath)
+	{
+
+
+		File.WriteAllBytes(_fullPath, _texture.EncodeToJPG(100));
+	
+		Debug.Log("Kb was saved as: " + _fullPath);
+	}
+
 	public void SaveToCompleted()
 	{
+	
 		//FileUtil.DeleteFileOrDirectory(SaveFilePath);
-		StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture,SaveSaveCompletedPath));
+	
+		SaveTextureAsPNGNow((Texture2D)CloneTexure2D, SaveSaveCompletedPath);
 		CtrlPainting.Ins.ApplyToChangeToCompled();
 	}
 
 	public void SaveToShared()
 	{
-		StartCoroutine(SaveTextureAsPNG((Texture2D)material.mainTexture, SaveSharedPath));
+		StartCoroutine(SaveTextureAsPNG((Texture2D)CloneTexure2D, SaveSharedPath));
 		CtrlPainting.Ins.ApplyToChangeToShared();
 	}
 
@@ -367,7 +381,7 @@ public class PaintingLayer : MonoBehaviour
 	{
 		get
 		{
-			return Path.Combine(SaveCompleted, SourcePainting.PageConfig.UniqueId + ".png");
+			return Path.Combine(SaveCompleted, SourcePainting.PageConfig.UniqueId + ".jpg");
 		}
 	}
 	
@@ -385,7 +399,7 @@ public class PaintingLayer : MonoBehaviour
 				Directory.CreateDirectory(dir);
 			}
 
-			return Path.Combine(dir, SourcePainting.PageConfig.UniqueId + ".png");
+			return Path.Combine(dir, SourcePainting.PageConfig.UniqueId + ".jpg");
 		}
 	}
 	private void OnDisable()
@@ -400,9 +414,8 @@ public class PaintingLayer : MonoBehaviour
 	 public void FloodFillBorder(Texture2D targetTexture, Color[] aTex, int aX, int aY, Color aFillColor, Color aBorderColor, Vector3 mousePosition)
 	{
 		//TopPixel = new Vector2(9999, 0); BottomPixel = new Vector2(0, 99999);
-		colorTemp = colorReset;
-		TempLayer.PixelPanit = 0;
-
+	
+	
 		int w = targetTexture.width;
 		int h = targetTexture.height;
 		Color[] colors = targetTexture.GetPixels();
@@ -424,7 +437,7 @@ public class PaintingLayer : MonoBehaviour
 					break;
 			
 
-				colorTemp[i + current.y * w] = aFillColor;
+			//	colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
 				//TopPixel.x = Mathf.Min(i, TopPixel.x);
 				//TopPixel.y = Mathf.Max(current.y,TopPixel.y);
@@ -449,7 +462,7 @@ public class PaintingLayer : MonoBehaviour
 					break;
 
 				
-				colorTemp[i + current.y * w] = aFillColor;
+			//	colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
 				checkedPixels[i + current.y * w] = 1;
 				//TopPixel.x = Mathf.Min(i, TopPixel.x);
@@ -481,8 +494,7 @@ public class PaintingLayer : MonoBehaviour
 		public Point(int aX, int aY) : this((short)aX, (short)aY) { }
 	}
 
-
-
+	
 	//void floodFillUtil(int screen[][N], int x, int y, int prevC, int newC)
 	//{
 	//	// Base cases 
@@ -512,7 +524,7 @@ public class PaintingLayer : MonoBehaviour
 	//}
 
 	// Driver program to test above function 
-	
+
 } 
 
 

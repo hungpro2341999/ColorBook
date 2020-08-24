@@ -14,11 +14,24 @@ public class Categories : MonoBehaviour
     public ScrollRect Scroll;
     public RectTransform Rect;
     public Transform Visible;
- 
+    public List<ColoringPageConfig> listItem;
+    public List<Sprite> ListImage = new List<Sprite>();
+    public ShowImageIcon[] ListIcon = new ShowImageIcon[0];
+    public GameObject PaintColoring;
+    public bool isInstace = false;
+    public Transform parent;
+    public int index;
+
     // Start is called before the first frame update
     private void Start()
     {
+       
+      
         Rect = GetComponent<RectTransform>();
+    }
+    public void AddListIcon()
+    {
+        ListIcon = transform.GetComponentsInChildren<ShowImageIcon>();
     }
     public void OnDrag()
     {
@@ -30,8 +43,30 @@ public class Categories : MonoBehaviour
     }
     public void Init()
     {
-        ColorPageConfig = transform.gameObject.GetComponentsInChildren<ShowImageIcon>();
-       
+
+        if(isInstace)
+        {
+            ColorPageConfig = new ShowImageIcon[listItem.Count];
+            for(int i=0;i<listItem.Count;i++)
+            {
+               var  a =   Instantiate(PaintColoring, parent);
+                var aa = a.transform.GetChild(0).transform.GetChild(0);
+                aa.GetComponent<ShowImageIcon>().nameCategories = nameCategories;
+                aa.GetComponent<ShowImageIcon>().Page = listItem[i];
+                aa.GetComponent<Image>().sprite = ListImage[i];
+                GameObject.Find("LoadData").GetComponent<DataCategori>().categories[index].ListPainting.Add(aa.GetComponent<Image>());
+                ColorPageConfig[i] = aa.GetComponent<ShowImageIcon>();
+             
+            }
+
+        }
+        else
+        {
+
+            ColorPageConfig = transform.gameObject.GetComponentsInChildren<ShowImageIcon>();
+        }
+
+     
         if(!PlayerPrefs.HasKey(Key))
         {
            

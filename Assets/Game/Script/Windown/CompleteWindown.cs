@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -24,16 +22,26 @@ public class CompleteWindown :Windown
     }
     public override void Event_Open()
     {
+        float ratio = CtrlPainting.Ins.Width / CtrlPainting.Ins.Height;
+
+        float width = 678;
+        float height = (CtrlPainting.Ins.Height * width) / CtrlPainting.Ins.Width;
+        CtrlPainting.Ins.Paint.CloneTexure2D.Apply();
         GameManager.Ins.isGamePause = true;
         Texture2D tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.RGB24, false);
-        var mainTexture = (Texture2D)CtrlPainting.Ins.Paint.material.mainTexture;
+        var mainTexture = (Texture2D)CtrlPainting.Ins.Paint.CloneTexure2D;
 
 
         tex = mainTexture;
 
-
+        if (height > 678)
+        {
+            width = (CtrlPainting.Ins.Width * 687 )/ (CtrlPainting.Ins.Height);
+            height = 678;
+        }
+        img.GetComponent<RectTransform>().sizeDelta =new Vector2(width, height);
         img.sprite = Sprite.Create(tex, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
-        img.SetNativeSize();
+       // img.SetNativeSize();
     }
     public override void Event_Close()
     {
@@ -70,15 +78,20 @@ public class CompleteWindown :Windown
     }
     public void Continue()
     {
-        GameManager.Ins.CloseSingleWindown(TypeWindown.Completed);
+        
+       GameManager.Ins.CloseSingleWindown(TypeWindown.Completed);
     }
-    public void Back()
+    public void BackToHome()
     {
-        GameManager.Ins.CloseSingleWindown(TypeWindown.Completed);
+
+        ((GamePlayWindown)GameManager.Ins.GetWindown(TypeWindown.Painting)).StartBackHome();
     }
 
     public void ContinuePaint()
     {
-        GameManager.Ins.OpenWindown(TypeWindown.Home);
+
+        ((GamePlayWindown)GameManager.Ins.GetWindown(TypeWindown.Painting)).BackToHome();
+
+
     }
 }

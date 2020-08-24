@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class GamePlayWindown : Windown
 {
-   
+    public TabCtrl CtrlTab;
     public override void Event_Open()
     {
-      
+        CtrlTab.SwitchTab(1);
+
+        GameManager.Ins.CloseSingleWindown(TypeWindown.Completed);
         GameManager.Ins.UI_General.gameObject.SetActive(false);
     }
 
@@ -28,9 +30,15 @@ public class GamePlayWindown : Windown
     }
     public override void Event_Close()
     {
+        if (CtrlPainting.Ins.Paint.SpriteImg.sprite)
+        {
+            CtrlPainting.Ins.Paint.SpriteImg.sprite = null;
+        }
 
-       
-      
+        
+        if (CtrlPainting.Ins.Paint.TemPlayer.SpriteImg!=null)
+        CtrlPainting.Ins.Paint.TemPlayer.SpriteImg.sprite = null;
+
         //var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
         //home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(CtrlPainting.Ins.CacheToPaint.PathSave.uniqueId, CtrlPainting.Ins.CacheToPaint.PathSave.categories);
 
@@ -38,6 +46,7 @@ public class GamePlayWindown : Windown
 
     public void LoadBack()
     {
+       
         if (CtrlPainting.Ins.CacheToPaint.PathSave != null)
             CtrlPainting.Ins.ApplyToChage(CtrlPainting.Ins.CacheToPaint.PathSave.path);
         if (CtrlPainting.Ins.CacheToPaint.Paint != null)

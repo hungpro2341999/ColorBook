@@ -11,8 +11,8 @@ public class WindownSeeAll : Windown
     public DataCategori Data;
     public Text nameCategories;
     // Start is called before the first frame update
-    
 
+   
     public void Init()
     {
         int count = Data.categories[0].ListPainting.Count;
@@ -28,6 +28,7 @@ public class WindownSeeAll : Windown
     public void ShowAll(string nameCategories)
     {
         this.nameCategories.text = nameCategories;
+
         int count = 0;
         List<Image> ImgShow = new List<Image>();
         for(int i=0;i < Data.categories.Count;i++)
@@ -35,17 +36,23 @@ public class WindownSeeAll : Windown
             if(Data.categories[i].NameCategories == nameCategories)
             {
                 ImgShow = Data.categories[i].ListPainting;
-                count = ImgShow.Count;
+
                 break;
             }
+
+           
         }
-          
+        Debug.Log(nameCategories);
+        var a = GameManager.Ins.GetHome().GetTabCategories().GetCategories(nameCategories).ListIcon;
+        count   = a.Length;
         for (int i = 0; i < PoolIcon.Count; i++)
         {
             if (i < count)
             {
                 PoolIcon[i].transform.GetChild(0).GetComponent<Image>().sprite = ImgShow[i].sprite;
                 PoolIcon[i].gameObject.SetActive(true);
+          //      PoolIcon[i].GetComponent<Button>().onClick = null;
+                PoolIcon[i].GetComponent<Button>().onClick.AddListener(a[i].OpenGameWindow);
             }
             else
             {
@@ -53,5 +60,9 @@ public class WindownSeeAll : Windown
             }
 
         }
+
+     
+       
+            
     }
 }

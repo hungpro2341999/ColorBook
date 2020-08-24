@@ -10,7 +10,7 @@ public class TabCompleted : Tab
     public bool isChangeCategories = false;
     public List<PathPainted> ListUnique = new List<PathPainted>();
     public List<PathPainted> ListPaintChange = new List<PathPainted>();
-    
+    public List<PathPainted> ListPaintChangeColor = new List<PathPainted>();
     public string path;
     public GameObject PerbIcon;
     public string pathId;
@@ -94,23 +94,26 @@ public class TabCompleted : Tab
 
             paint.Add(a);
 
-           
-
-            if (tex.LoadImage(File.ReadAllBytes(Path.Combine(SaveFilePath, (file.unique + ".jpg")))))
+           if(File.Exists(Path.Combine(SaveFilePath, (file.unique + ".jpg"))))
             {
-                
-                tex.Apply(false, true);
-                width = tex.width;
-                height = tex.height;
-                tex = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
                 if (tex.LoadImage(File.ReadAllBytes(Path.Combine(SaveFilePath, (file.unique + ".jpg")))))
                 {
-                    Debug.Log(width + "  " + height);
-                    a.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
+
+                    tex.Apply(false, true);
+                    width = tex.width;
+                    height = tex.height;
+                    tex = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
+                    if (tex.LoadImage(File.ReadAllBytes(Path.Combine(SaveFilePath, (file.unique + ".jpg")))))
+                    {
+                        Debug.Log(width + "  " + height);
+                        a.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
+                    }
+
+
                 }
 
-
             }
+
 
 
         }
@@ -123,8 +126,25 @@ public class TabCompleted : Tab
         {
             AddPainted(ListPaintChange[i]);
         }
+            for(int i=0;i<ListPaintChangeColor.Count;i++)
+        {
+            ChangePaint(ListPaintChangeColor[i]);
+        }
         ListPaintChange = new List<PathPainted>();
-       
+        ListPaintChangeColor = new List<PathPainted>();
+
+
+    }
+
+    public void ChangePaint(PathPainted file)
+    {
+        for(int i=0;i<paint.Count;i++)
+        {
+            if(paint[i].categories == file.nameCategories && paint[i].unique == file.unique)
+            {
+                paint[i].ChangeColor();
+            }
+        }
     }
 
     public void AddPainted(PathPainted file)
@@ -136,7 +156,8 @@ public class TabCompleted : Tab
         a.isChangeCategories = isChangeCategories;
         a.typeLocal = path;
         a.Load(file.nameCategories, file.unique, path);
-      
+        
+
 
         if (tex.LoadImage(File.ReadAllBytes(Path.Combine(SaveFilePath,(file.unique+".jpg")))))
         {
@@ -296,7 +317,13 @@ public class TabCompleted : Tab
         }
         else
         {
-            Debug.Log("Da Co Roi");
+            Debug.Log(path);
+            if(!ListPaintChangeColor.Contains(new PathPainted(nameCategories, path, nameUnique)))
+            {
+                ListPaintChangeColor.Add(new PathPainted(nameCategories, path, nameUnique));
+            }
+
+            
         }
       
         

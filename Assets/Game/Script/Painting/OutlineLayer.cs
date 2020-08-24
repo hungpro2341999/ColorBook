@@ -17,29 +17,33 @@ public class OutlineLayer : MonoBehaviour
 	public Image Img;
 	Camera cam;
 	public Vector2 PosInit;
-	
+	public SpriteRenderer SpriteImg;
+
+	private void Start()
+	{
+		SpriteImg = GetComponent<SpriteRenderer>();
+	}
 
 	public void SetTexture(Color[] color)
 	{
+		_textureHolder = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.RGB24, false); 
 		float width = CtrlPainting.Ins.PageConfig.GetSize().x;
 		float height = CtrlPainting.Ins.PageConfig.GetSize().y;
-	
-		MeshFilter mf = GOUtil.CreateComponentIfNoExists<MeshFilter>(gameObject);
-	
-		Mesh mesh = MeshUtil.CreatePlaneMesh(width, height);
-	
-		mf.mesh = mesh;
-	
-		MeshRenderer mr = GOUtil.CreateComponentIfNoExists<MeshRenderer>(gameObject);
-	
-	    material = new Material(shader);
-
-		mr.material = material;
-		tex.SetPixels(color);
-
+		Graphics.CopyTexture(CtrlPainting.Ins.Paint.CloneTexure2D, _textureHolder);
+		duplicateTexture(_textureHolder);
+		
+		_textureHolder.SetPixels(CtrlPainting.Ins.Paint.CloneTexure2D.GetPixels());
+		_textureHolder.Apply();
+		//	removeTextureBackground();
+		//	tex.SetPixels(color);
 		tex.Apply();
-		mr.material.mainTexture = tex;
-		((Texture2D)mr.material.mainTexture).Apply();
+		GetComponent<SpriteRenderer>().sprite = Sprite.Create(_textureHolder, new Rect(0, 0, (int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height), new Vector2(0.5f, 0.5f));
+
+
+	
+
+	
+
 	
 
 	}
@@ -48,7 +52,7 @@ public class OutlineLayer : MonoBehaviour
 	{
 
 		tex = new Texture2D((int)CtrlPainting.Ins.Width, (int)CtrlPainting.Ins.Height, TextureFormat.ARGB32, false);
-		tex = duplicateTexture(tex);
+		//tex = duplicateTexture(tex);
 
 		
 
@@ -72,6 +76,52 @@ public class OutlineLayer : MonoBehaviour
 		RenderTexture.ReleaseTemporary(renderTex);
 		return readableText;
 	}
+	public Texture2D _textureHolder;
+	public Color _colorHolder = new Color(0,0,0,1);
 
-	
+	void removeTextureBackground()
+	{
+		if (_textureHolder != null)
+		{
+			_colorHolder = _textureHolder.GetPixel(0, 0);
+			floodFill(0, 0);
+			floodFill(0, _textureHolder.height - 1);
+			floodFill(_textureHolder.width - 1, 0);
+			floodFill(_textureHolder.width - 1, _textureHolder.height - 1);
+			_textureHolder.Apply();
+		}
+	}
+	//--------------------------------------------------------------------
+	void floodFill(int x, int y)
+	{
+		if (x < 0 || y < 0 || x > _textureHolder.width || y > _textureHolder.height)
+			return;
+		Color color = _textureHolder.GetPixel(x, y);
+		if (isWhite(color) && color.a > 0)
+		{
+			color.a = 0;
+			_textureHolder.SetPixel(x, y, color);
+			floodFill(x - 1, y);
+			floodFill(x + 1, y);
+			floodFill(x, y - 1);
+			floodFill(x, y + 1);
+		}
+		else
+			return;
+	}
+	//--------------------------------------------------------------
+	bool isWhite(Color color)
+	{
+		float threshold = 1f;
+		bool r = Mathf.Abs(color.r - _colorHolder.r) < threshold;
+		bool g = Mathf.Abs(color.g - _colorHolder.g) < threshold;
+		bool b = Mathf.Abs(color.b - _colorHolder.b) < threshold;
+		if (r && g && b)
+			return true;
+		else
+			return false;
+	}
+
+
+
 }

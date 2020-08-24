@@ -48,11 +48,13 @@ public class LoadStyleImage : Editor
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("LoalColor", buttonStyle))
         {
+         //   GameObject.FindObjectOfType<WindownSeeAll>().Init();
             GameObject.Find("ColorGame").GetComponent<InstanceColor>().Init();
         }
         if (GUILayout.Button("LoalPool", buttonStyle))
         {
-            GameObject.Find("SellAllTab").GetComponent<WindownSeeAll>().Init();
+             ((WindownSeeAll)GameObject.Find("GameMananger").GetComponent<GameManager>().Windowns[1]).Init();
+          
         }
          if (GUILayout.Button("LoadBasic", buttonStyle))
         {
@@ -99,19 +101,24 @@ public class LoadStyleImage : Editor
 
             var ctrl = GameObject.Find("LoadData").GetComponent<DataCategori>();
             ctrl.categories[0].NameCategories = "Basic";
-          
+            
             var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/BasicAsset");
+            
             var Obj = GameObject.Find("GameMananger").GetComponent<DataMananger>().CategoriesPerb;
             var parent = GameObject.Find("Basic").transform;
+         
             for(int i=0;i<Asset.Count;i++)
             {
+               
                var a = Instantiate(Obj, parent);
+             
 
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Basic";
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().Page = Asset[i];
                 ctrl.categories[0].ListPainting.Add(a.transform.GetChild(0).GetChild(0).GetComponent<Image>());
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = Images[i];
             }
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Basic").AddListIcon();
 
         }
         index++;
@@ -196,7 +203,7 @@ public class LoadStyleImage : Editor
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cartoon";
             }
-
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Cartoon").AddListIcon();
 
 
         }
@@ -277,7 +284,7 @@ public class LoadStyleImage : Editor
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().GetComponent<Image>().sprite = Images[i];
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Cat";
             }
-
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Cat").AddListIcon();
 
 
         }
@@ -329,6 +336,7 @@ public class LoadStyleImage : Editor
                 EditorUtility.SetDirty(Asset[i]);
 
             }
+           
             EditorUtility.SetDirty(target);
 
         }
@@ -364,7 +372,7 @@ public class LoadStyleImage : Editor
 
             }
 
-
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Editor's choice").AddListIcon();
 
         }
         index++;
@@ -448,7 +456,7 @@ public class LoadStyleImage : Editor
             }
 
 
-
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Human").AddListIcon();
         }
         index++;
 
@@ -519,6 +527,10 @@ public class LoadStyleImage : Editor
             var Obj = GameObject.Find("GameMananger").GetComponent<DataMananger>().CategoriesPerb;
             var parent = GameObject.Find("Mandalas").transform;
             ctrl.categories[5].ListPainting = new List<Image>();
+            var categories = GameObject.Find("CategoriesTab").GetComponent<TabCatogories>().ListCategories[5];
+            categories.listItem = Asset;
+            categories.ListImage = Images;
+
             for (int i = 0; i < Asset.Count; i++)
             {
                 var a = Instantiate(Obj, parent);
@@ -529,7 +541,7 @@ public class LoadStyleImage : Editor
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Mandala";
             }
 
-
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Mandalas").AddListIcon();
 
         }
         index++;
@@ -601,8 +613,13 @@ public class LoadStyleImage : Editor
 
             var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/Mystic AnimalsAsset");
             var Obj = GameObject.Find("GameMananger").GetComponent<DataMananger>().CategoriesPerb;
-            var parent = GameObject.Find("Mystic Animals").transform;
+           var parent = GameObject.Find("Mystic Animals").transform;
             ctrl.categories[6].ListPainting = new List<Image>();
+           
+            var categories = GameObject.Find("CategoriesTab").GetComponent<TabCatogories>().ListCategories[6];
+            categories.listItem = Asset;
+            categories.ListImage = Images;
+
             for (int i = 0; i < Asset.Count; i++)
             {
                 var a = Instantiate(Obj, parent);
@@ -613,7 +630,7 @@ public class LoadStyleImage : Editor
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Mystic Animals";
             }
 
-
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Mystic Animals").AddListIcon();
 
         }
         index++;
@@ -689,6 +706,9 @@ public class LoadStyleImage : Editor
             var Obj = GameObject.Find("GameMananger").GetComponent<DataMananger>().CategoriesPerb;
             var parent = GameObject.Find("Nature").transform;
             ctrl.categories[7].ListPainting = new List<Image>();
+            var categories = GameObject.Find("CategoriesTab").GetComponent<TabCatogories>().ListCategories[7];
+            categories.listItem = Asset;
+            categories.ListImage = Images;
             for (int i = 0; i < Asset.Count; i++)
             {
                 var a = Instantiate(Obj, parent);
@@ -698,7 +718,7 @@ public class LoadStyleImage : Editor
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Nature";
             }
 
-
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Nature").AddListIcon();
 
         }
         index++;

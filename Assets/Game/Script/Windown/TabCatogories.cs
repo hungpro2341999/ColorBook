@@ -105,4 +105,19 @@ public class TabCatogories : Tab
         }
         return null;
     }
+
+    public Categories GetCategories(string name)
+    {
+        foreach(var categories in ListCategories)
+        {
+            if(categories.nameCategories == name)
+            {
+                return categories;
+            }
+
+            
+        }
+
+        return null;
+    }
 }

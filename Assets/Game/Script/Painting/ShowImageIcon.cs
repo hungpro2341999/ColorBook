@@ -158,6 +158,9 @@ public class ShowImageIcon : MonoBehaviour
 
     public void StartLoadingPaint()
     {
+        transform.parent.gameObject.SetActive(true);
+        GameManager.Ins.GetHome().gameObject.SetActive(true);
+
         StartCoroutine(GameManager.Ins.StartLoading(() => { GameManager.Ins.OpenWindown(TypeWindown.Painting); }
 
      , StartLoading));
@@ -181,11 +184,6 @@ public class ShowImageIcon : MonoBehaviour
             CtrlPainting.Ins.StartPainting(Page, false, this, Save);
             var home = ((WindownHome)GameManager.Ins.GetWindown(TypeWindown.Home));
             home.GetTabMyArt().GetTabInProcess().AddToInforImageToDisk(CtrlPainting.Ins.CacheToPaint.PathSave.uniqueId, CtrlPainting.Ins.CacheToPaint.PathSave.categories);
-        }
-
-        for(int i = 0; i < 99999; i++)
-        {
-
         }
 
        

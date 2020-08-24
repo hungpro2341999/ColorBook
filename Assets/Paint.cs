@@ -1,4 +1,5 @@
 ﻿using PaintCraft.Canvas.Configs;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +12,7 @@ public class Paint : MonoBehaviour
     public ColoringPageConfig PageColorPainting;
     public string categories;
     public string unique;
-    public string PathPainting;
+    public string PathPainting ="";
     public string typeLocal;
     public void ContinuePaint()
     {
@@ -34,11 +35,12 @@ public class Paint : MonoBehaviour
 
     public void Load(string nameCategories,string unique,string path)
     {
-      
+        Debug.Log(typeLocal);
+        Debug.Log(SaveDirectory);
         this.categories = nameCategories;
         this.unique     = unique;
         PageColorPainting = GetColorPainting(categories, unique);
-        this.PathPainting = Path.Combine(SaveDirectory, PageColorPainting.UniqueId + ".jpg");
+        this.PathPainting = Path.Combine(SaveDirectory, unique + ".jpg");
        // LoadPaint();
 
     }
@@ -137,7 +139,7 @@ public class Paint : MonoBehaviour
         float width = 0;
         float height = 0;
         Texture2D tex = new Texture2D(500, 500, TextureFormat.RGB24, false);
-       
+        Debug.Log(gameObject.name);
         
         if (tex.LoadImage(File.ReadAllBytes(PathPainting)))
         {
@@ -155,6 +157,28 @@ public class Paint : MonoBehaviour
 
         }
 
+    }
+
+    public  void ChangeColor()
+    {
+        float width = 0;
+        float height = 0;
+        Texture2D tex = new Texture2D(500, 500, TextureFormat.RGB24, false);
+        if (tex.LoadImage(File.ReadAllBytes(PathPainting)))
+        {
+
+            tex.Apply(false, true);
+            width = tex.width;
+            height = tex.height;
+            tex = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
+            if (tex.LoadImage(File.ReadAllBytes(PathPainting)))
+            {
+                Debug.Log(width + "  " + height);
+                transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
+            }
+
+
+        }
     }
 
     string SaveDirectory
