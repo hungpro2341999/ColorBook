@@ -53,7 +53,7 @@ public class TabCtrl : MonoBehaviour
         {
             Vector3 pos = Tabs[i].transform.localPosition;
             pos.x = -720 + (offsetChange * i);
-            Debug.Log(offsetChange * i);
+       //     Debug.Log(offsetChange * i);
             Tabs[i].transform.localPosition = pos;
         }
         SwitchTab(index);

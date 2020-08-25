@@ -73,13 +73,14 @@ public class ShowImageIcon : MonoBehaviour
 
     public  void Check()
     {
-
-        if (!IsShowStart)
-        {
+     
+          
             Show = (TabCatogories.LeftPos < transform.position.x && transform.position.x < TabCatogories.RightPos);
-            if (Show)
+         //   Debug.Log(transform.parent.parent.parent.name + "   " + Show.ToString());
+
+        if (Show)
             {
-              
+         //   Debug.Log("Show");
             //  //  Anim.SetBool("Load1", true);
                 Visible();
             //    time += Time.deltaTime;
@@ -90,26 +91,11 @@ public class ShowImageIcon : MonoBehaviour
             }
             else
             {
+         //   Debug.Log(" Not Show");
             //    time = 0;
-                UnVisible();
+            UnVisible();
             }
-        }
-        else
-        {
-         //   Visible();
-            Show = (TabCatogories.LeftPos < transform.position.x && transform.position.x < TabCatogories.RightPos);
-           if (Show)
-            {
-
-            //  //  Anim.SetBool("Load2", true);
-                Visible();
-
-            }
-            else
-            {
-              UnVisible();
-            }
-        }
+      
       
       
     

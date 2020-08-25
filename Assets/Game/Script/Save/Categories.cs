@@ -221,7 +221,6 @@ public class Categories : MonoBehaviour
         for (int i =0; i< ColorPageConfig.Length;i++)
         {
 
-          
                 ColorPageConfig[i].Check();
             }
                

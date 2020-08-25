@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UniqueId: 175
   startImagePath: 
-  outlineTexture: {fileID: 2800000, guid: 3cd826ad9b35a804cb839eb50b5fc8fe, type: 3}
+  outlineTexture: {fileID: 2800000, guid: 4b14c386ae2aa894daa500a24e8c4861, type: 3}
   regionTexture: {fileID: 0}

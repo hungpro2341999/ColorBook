@@ -13,6 +13,7 @@ public class CameraHandler : MonoBehaviour
     public float[] ZoomBounds = new float[] { 320, 640 };
     public float cache;
     public Vector2 posCenter = Vector2.zero;
+    public Vector2 posInit;
    // public int touch = 0;
   
     
@@ -74,9 +75,12 @@ public class CameraHandler : MonoBehaviour
             switch (touch)
             {
 
+                case 1:
+                    
 
+                    break;
 
-                case 1: // Zooming
+                case 2: // Zooming
                     Debug.Log("Update Camera");
                     StartPichZoom();
                     isZoom = true;

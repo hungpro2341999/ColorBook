@@ -37,9 +37,14 @@ public class PaintingLayer : MonoBehaviour
     public  Color[] colorReset;
 	public Texture2D textureBorder;
 	public Vector2 TopPixel = new Vector2(9999, 0), BottomPixel = new Vector2(0,99999);
+
+	public Vector3 PosInit;
+
 	public bool StartPaint = false;
 	public SpriteRenderer SpriteImg;
 	public bool changeLayer = false;
+	private byte[] colorBorder;
+	public static  float max;
 	private void Start()
 	{
 		SpriteImg = GetComponent<SpriteRenderer>();
@@ -126,13 +131,28 @@ public class PaintingLayer : MonoBehaviour
 		
 	
 		TemPlayer.Init();
-		
+		GetColorRegion(colorRegion);
 	
 	//	TemPlayer.SetTempText(CloneTexure2D.GetPixels(), Vector3.zero, false,(changeLayer = !changeLayer));
 		StartPaint = false;
 	}
 
-
+	public void GetColorRegion(Color[] color)
+	{
+		colorBorder = new byte[color.Length];
+		for(int i=0;i<color.Length;i++)
+		{
+	             if(color[i] == new Color(0, 0, 0, 1))
+			{
+				colorBorder[i] = 1;
+			}
+			else
+			{
+				colorBorder[i] = 0;
+			}
+			
+		}
+	}
 
 	public void UpdateLayer()
 	{
@@ -202,11 +222,12 @@ public class PaintingLayer : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
+			PosInit = Input.mousePosition;
 			StartPaint = true;
 
 		}
 
-		if(StartPaint)
+		if (StartPaint)
 		{
 			int touch = Input.touchCount;
 			if (touch > 1)
@@ -217,7 +238,7 @@ public class PaintingLayer : MonoBehaviour
 		
 				
 		}
-
+		
 		if (Input.GetMouseButtonUp(0))
 		{
 
@@ -235,17 +256,17 @@ public class PaintingLayer : MonoBehaviour
 			Vector3 realPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			float perX = Mathf.Abs(-GetComponent<BoxCollider>().size.x / 2 - realPos.x) / GetComponent<BoxCollider>().size.x;
 			float perY = Mathf.Abs((-GetComponent<BoxCollider>().size.y / 2 - realPos.y) / GetComponent<BoxCollider>().size.y);
-			Debug.Log(perX + "  " + perY);
+		//	Debug.Log(perX + "  " + perY);
 
 			Color colorPaint = (CloneTexure2D).GetPixel((int)(perX * width), (int)(perY * height));
 			if (ColorPainting.a == colorPaint.a && ColorPainting.b == colorPaint.b && ColorPainting.g==colorPaint.g && colorPaint.r == ColorPainting.r)
 			{
-				Debug.Log("isPainted");
+			//	Debug.Log("isPainted");
 				return;
 			}
-			Debug.Log("Painted");
+		//	Debug.Log("Painted");
 			
-		
+		    
 			TemPlayer.StartFloodFill();
 			FloodFillBorder(CloneTexure2D, colorRegion, (int)(perX * width), (int)(perY * height), ColorPainting, new Color(0, 0, 0, 1), Input.mousePosition);
 		//	CloneTexure2D.Apply();
@@ -424,8 +445,10 @@ public class PaintingLayer : MonoBehaviour
 		Color refCol = aBorderColor;
 		Queue<Point> nodes = new Queue<Point>();
 		nodes.Enqueue(new Point(aX, aY));
-		
-		
+		float maxX = aX;
+		float minX = aX;
+		float maxY = aY;
+		float minY = aY;
 		while(nodes.Count > 0)
 		{
 			Point current = nodes.Dequeue();
@@ -433,9 +456,10 @@ public class PaintingLayer : MonoBehaviour
 			for (int i = current.x; i < w; i++)
 			{
 				
-				if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
+				if (checkedPixels[i + current.y * w] > 0 || colorBorder[i + current.y * w] == 1)
 					break;
-			
+				maxX = Mathf.Max(maxX, i);
+				minY = Mathf.Min(minY, current.y);
 
 			//	colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
@@ -446,21 +470,22 @@ public class PaintingLayer : MonoBehaviour
 				checkedPixels[i + current.y * w] = 1;
 				if (current.y + 1 < h)
 				{
-					if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
+					if (checkedPixels[i + current.y * w + w] == 0 && colorBorder[i + current.y * w + w] != 1)
 						nodes.Enqueue(new Point(i, current.y + 1));
 				}
 				if (current.y - 1 >= 0)
 				{
 				
-					if (checkedPixels[i + current.y * w - w] == 0 && colorsBorder[i + current.y * w - w] != refCol)
+					if (checkedPixels[i + current.y * w - w] == 0 && colorBorder[i + current.y * w - w] != 1)
 						nodes.Enqueue(new Point(i, current.y - 1));
 				}
 			}
 			for (int i = current.x - 1; i >= 0; i--)
 			{
-				if (checkedPixels[i + current.y * w] > 0 || colorsBorder[i + current.y * w] == refCol)
+				if (checkedPixels[i + current.y * w] > 0 || colorBorder[i + current.y * w] == 1)
 					break;
-
+				minX = Mathf.Min(minX, i);
+				maxY = Mathf.Max(maxY, current.y);
 				
 			//	colorTemp[i + current.y * w] = aFillColor;
 				colors[i + current.y * w] = aFillColor;
@@ -471,19 +496,21 @@ public class PaintingLayer : MonoBehaviour
 				//BottomPixel.y = Mathf.Min(current.y, BottomPixel.y);
 				if (current.y + 1 < h)
 				{
-					if (checkedPixels[i + current.y * w + w] == 0 && colorsBorder[i + current.y * w + w] != refCol)
+					if (checkedPixels[i + current.y * w + w] == 0 && colorBorder[i + current.y * w + w] != 1)
 						nodes.Enqueue(new Point(i, current.y + 1));
 				}
 				if (current.y - 1 >= 0)
 				{
-					if (checkedPixels[i + current.y * w - w] == 0 && colorsBorder[i + current.y * w - w] != refCol)
+					if (checkedPixels[i + current.y * w - w] == 0 && colorBorder[i + current.y * w - w] != 1)
 						nodes.Enqueue(new Point(i, current.y - 1));
 				}
 
 			}
 
 		}
-	  
+	//	Debug.Log(maxX + " " + minX + "  " + maxY + "  " + minY);
+		Vector2 Size = new Vector2(Mathf.Abs(maxX - maxY), Mathf.Abs(maxY - minY));
+		max = Mathf.Max(Size.x, Size.y);
 		targetTexture.SetPixels(colors);
 	}
 	public struct Point

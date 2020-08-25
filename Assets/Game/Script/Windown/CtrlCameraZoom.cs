@@ -49,6 +49,7 @@ public class CtrlCameraZoom : MonoBehaviour
   
  
     public Vector3 InitPos;
+    public Vector3 InitPos1;
     bool press = true;
     // Update is called once per frame
 
@@ -58,12 +59,24 @@ public class CtrlCameraZoom : MonoBehaviour
         {
             return;
         }
-      
+        if (Input.GetMouseButtonDown(0))
+        {
+            InitPos1 = Input.mousePosition;
+           
+        }
+        
         int touch = Input.touchCount;
         switch (touch)
         {
+            case 1: // Move;
+                //if(InitPos1!=Input.mousePosition)
+                //{
+                //    Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                //    pos.z = -100;
+                //    MoveCamera(pos);
+                //}
 
-
+                break;
 
             case 2: // Zooming
              

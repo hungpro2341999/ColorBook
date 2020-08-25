@@ -124,7 +124,7 @@ public class TempLayer : MonoBehaviour
             Apply();
         }
 
-        max = 80;
+        max = PaintingLayer.max/10;
 
     }
     bool load = false;
@@ -146,10 +146,11 @@ public class TempLayer : MonoBehaviour
         }
         if(posCurr >= max)
         {
-          //  gameObject.SetActive(false);
-         //    Apply();
+            Privort.localScale = new Vector2(100, 100);
+            //  gameObject.SetActive(false);
+            //    Apply();
             //tex.SetPixels(CtrlPainting.Ins.Paint.colorReset);
-          //  tex.Apply();
+            //  tex.Apply();
             SpeedStart = 0;
            DoneFloodFill = true;
            

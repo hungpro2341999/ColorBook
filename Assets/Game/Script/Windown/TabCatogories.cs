@@ -25,24 +25,24 @@ public class TabCatogories : Tab
         BottomPos = Bottom.transform.position.y;
         foreach(var categories in ListCategories)
         {
+            if (categories == null)
+                continue;
             categories.Init();
         }
 
-        //foreach (var categories in ListCategories)
+        //foreach (var categories in ListCategories)s
         //{
         //    var visible = categories.isVisible();
         //    categories.Visible.gameObject.SetActive(visible);
         //}
         for (int i = 0; i < ListCategories.Count; i++)
         {
-            if (i < 4)
-            {
+            if (ListCategories[i] == null)
+                continue;
                 ListCategories[i].Visible.gameObject.SetActive(true);
-            }
-            else
-            {
-                ListCategories[i].Visible.gameObject.SetActive(false);
-            }
+         
+              //  ListCategories[i].Visible.gameObject.SetActive(false);
+            
         }
     }
 
@@ -52,6 +52,8 @@ public class TabCatogories : Tab
             return;
         foreach(var categories in ListCategories)
         {
+            if (categories == null)
+                continue;
             var visible = categories.isVisible();
             categories.Visible.gameObject.SetActive(visible);
         }
@@ -62,8 +64,11 @@ public class TabCatogories : Tab
     {
         foreach(var categories in ListCategories)
         {
+            if (categories == null)
+                continue;
             if(categories.nameCategories == nameCategories)
             {
+                
                 DataCategori.PathSavePainting pathSave = new DataCategori.PathSavePainting(nameCategories, path, unique);
                 categories.ChangeCategories(pathSave);
             }
@@ -74,6 +79,8 @@ public class TabCatogories : Tab
     {
         foreach (var categories in ListCategories)
         {
+            if (categories == null)
+                continue;
             if (categories.nameCategories == name)
             {
                  return categories.GetPath(unique);
@@ -86,6 +93,8 @@ public class TabCatogories : Tab
     {
         foreach (var categories in ListCategories)
         {
+            if (categories == null)
+                continue;
             if (categories.nameCategories == name)
             {
                 return categories.GetPathConfig(unique);
@@ -98,6 +107,8 @@ public class TabCatogories : Tab
     {
         foreach (var categories in ListCategories)
         {
+            if (categories == null)
+                continue;
             if (categories.nameCategories == name)
             {
                 return categories.GetIconShow(unique);
@@ -110,6 +121,8 @@ public class TabCatogories : Tab
     {
         foreach(var categories in ListCategories)
         {
+            if (categories == null)
+                continue;
             if(categories.nameCategories == name)
             {
                 return categories;

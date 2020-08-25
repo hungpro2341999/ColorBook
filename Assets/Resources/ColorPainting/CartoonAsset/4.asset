@@ -15,4 +15,4 @@ MonoBehaviour:
   UniqueId: 6
   startImagePath: 
   outlineTexture: {fileID: 2800000, guid: 302a07f09becbba4cb4258e5a2654b9e, type: 3}
-  regionTexture: {fileID: 0}
+  regionTexture: {fileID: 2800000, guid: 1fdaa801f7cc1854cbdb7174d225e0d5, type: 3}

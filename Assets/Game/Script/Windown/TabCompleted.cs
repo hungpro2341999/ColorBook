@@ -59,7 +59,7 @@ public class TabCompleted : Tab
             {
                 ListUnique.Add(new PathPainted(painted.nameCategories,painted.unique,painted.unique));
             }
-            Debug.Log(GetPaintes().ToString());
+        //    Debug.Log(GetPaintes().ToString());
         }
        
     }
