@@ -541,7 +541,7 @@ public class LoadStyleImage : Editor
                 a.transform.GetChild(0).transform.GetChild(0).GetComponent<ShowImageIcon>().nameCategories = "Mandala";
             }
 
-            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Mandalas").AddListIcon();
+            GameObject.Find("GameMananger").GetComponent<GameManager>().GetHome().GetTabCategories().GetCategories("Mandala").AddListIcon();
 
         }
         index++;

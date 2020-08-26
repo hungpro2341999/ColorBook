@@ -29,6 +29,11 @@ public class SettingCtrl : MonoBehaviour
     {
         ApplySetting();
     }
+
+    private void OnEnable()
+    {
+        ApplySetting();
+    }
     public void Init()
     {
         if (!PlayerPrefs.HasKey(Key_Sound))

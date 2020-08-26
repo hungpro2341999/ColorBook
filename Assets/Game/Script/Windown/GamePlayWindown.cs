@@ -5,13 +5,41 @@ using UnityEngine;
 public class GamePlayWindown : Windown
 {
     public TabCtrl CtrlTab;
+    public bool ShowContinue;
+    public float TimeShow;
+    public Transform TapToContinue;
+    public float time;
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            time = 0;
+            ShowContinue = false;
+            TapToContinue.gameObject.SetActive(false);
+            GameManager.Ins.isGamePause = false;
+        }
+        if(!ShowContinue)
+        {
+           time += Time.deltaTime;
+            if(time>=TimeShow)
+            {
+                ShowContinue = true;
+                GameManager.Ins.isGamePause = true;
+                TapToContinue.gameObject.SetActive(true);
+            }
+        }
+        
+    }
     public override void Event_Open()
     {
+        time = 0;
+        ShowContinue = false;
         CtrlTab.SwitchTab(1);
 
         GameManager.Ins.CloseSingleWindown(TypeWindown.Completed);
         GameManager.Ins.UI_General.gameObject.SetActive(false);
     }
+
 
     public void OpenCompletedWindown()
     {
@@ -21,8 +49,8 @@ public class GamePlayWindown : Windown
     public void BackToHome()
     {
         CtrlPainting.Ins.Paint.SaveImg();
-        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
-        Invoke("StartBackHome", 0.1f);
+        GameManager.Ins.OpenLoading();
+        Invoke("StartBackHome",1);
     }
     public void StartBackHome()
     {

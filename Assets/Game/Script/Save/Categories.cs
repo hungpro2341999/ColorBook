@@ -204,11 +204,24 @@ public class Categories : MonoBehaviour
     }
     public void ShowAll()
     {
-       GameManager.Ins.OpenWindown(TypeWindown.SellAll);
 
+        GameManager.Ins.OpenWindown(TypeWindown.SellAll);
         var win = GameManager.Ins.GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
         win.ShowAll(nameCategories);
+    
+//Invoke("StartShowAll1",1);
+     
+
+        
     }
+    public void StartShowAll1()
+    {
+       
+     
+       GameManager.Ins.StartLoading01(() => { GameManager.Ins.OpenWindown(TypeWindown.SellAll); },null);
+    }
+
+  
 
     private void Update()
     {

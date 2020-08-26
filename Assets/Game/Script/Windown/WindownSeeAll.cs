@@ -42,7 +42,7 @@ public class WindownSeeAll : Windown
 
            
         }
-        Debug.Log(nameCategories);
+   //     Debug.Log(nameCategories);
         var a = GameManager.Ins.GetHome().GetTabCategories().GetCategories(nameCategories).ListIcon;
         count   = a.Length;
         for (int i = 0; i < PoolIcon.Count; i++)

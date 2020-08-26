@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     public bool Loading = false;
     public Transform TrsLoading;
+    public Transform TrsLoading01;
     public Transform TrsConnectInternet;
 
 
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour
      
         //  PlayerPrefs.DeleteAll();
         Ctrl.Initialize();
-        GameManager.Ins.OpenWindown(TypeWindown.Home);
+        GameManager.Ins.OpenWindown(TypeWindown.Loading);
     }
     private void Start()
     {
@@ -149,6 +150,7 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator StartLoading(System.Action ActionEnd,System.Action ActionLoading)
     {
+       
         isLoading = true;
         ActionLoading();
        
@@ -156,7 +158,6 @@ public class GameManager : MonoBehaviour
        
 
          yield return new WaitForSeconds(0.5f);
-        TrsLoading.gameObject.SetActive(false);
 
         isLoading = false;
         if (ActionEnd != null)
@@ -164,9 +165,38 @@ public class GameManager : MonoBehaviour
             ActionEnd();
         }
 
+        Invoke("CloseLoading", 1);   
 
 
     }
+    public IEnumerator StartLoading01(System.Action ActionEnd, System.Action ActionLoading)
+    {
+
+        isLoading = true;
+        ActionLoading();
+
+        Loading = true;
+
+
+   
+      
+        yield return new WaitForSeconds(2);
+        if (ActionEnd != null)
+        {
+            ActionEnd();
+        }
+        isLoading = false;
+      
+
+        TrsLoading01.gameObject.SetActive(false);
+       
+
+     
+
+
+    }
+
+
     public void StartLoadingData(System.Action Action)
     {
         
@@ -180,6 +210,16 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void OpenLoading()
+    {
+        TrsLoading.GetComponent<Animator>().SetBool("Open", true);
+    }
+    public void CloseLoading()
+    {
+
+        TrsLoading.GetComponent<Animator>().SetBool("Open", false);
+
+    }
     
    
 }

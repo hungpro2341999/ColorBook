@@ -56,8 +56,8 @@ public class Paint : MonoBehaviour
     public void OpenGameWindown()
     {
 
-        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
-        Invoke("StartLoading", 0.1f);
+        GameManager.Ins.OpenLoading();
+        Invoke("StartLoading", 1f);
 
     }
 

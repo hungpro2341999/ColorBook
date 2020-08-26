@@ -102,7 +102,7 @@ public class PaintingLayer : MonoBehaviour
 			CloneTexure2D = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
 
 			TextureReigion = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
-
+             
 
 			Color[] color = CloneTexure2D.GetPixels();
 			for(int i=0;i<color.Length;i++)
@@ -511,6 +511,7 @@ public class PaintingLayer : MonoBehaviour
 	//	Debug.Log(maxX + " " + minX + "  " + maxY + "  " + minY);
 		Vector2 Size = new Vector2(Mathf.Abs(maxX - maxY), Mathf.Abs(maxY - minY));
 		max = Mathf.Max(Size.x, Size.y);
+		
 		targetTexture.SetPixels(colors);
 	}
 	public struct Point

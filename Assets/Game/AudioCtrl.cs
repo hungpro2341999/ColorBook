@@ -35,10 +35,7 @@ public class AudioCtrl : MonoBehaviour
             Sounds.Add(audio);
         }
 
-        if (SettingCtrl.Ins.isMusic())
-        {
-            Play("BG");
-        }
+     
     }
     //public void ChangeMusic()
     //{

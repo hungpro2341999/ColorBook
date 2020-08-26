@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public enum TypeWindown {SellAll,Home,
-    Painting,Completed,Loading
+    Painting,Completed,Pause,Loading
 }
 public class Windown : MonoBehaviour
 
@@ -12,22 +12,28 @@ public class Windown : MonoBehaviour
     public bool isStartClose = false;
     public float timeToClose;
     public Animator Animtion;
-   
+    public bool LoadingStart;
     public TypeWindown type;
     public void Open()
     {
-        isStartClose = false;
-        Event_Open();
-        gameObject.SetActive(true);
-        if (Animtion == null)
+        if(!LoadingStart)
         {
+            isStartClose = false;
+            Event_Open();
+            gameObject.SetActive(true);
+            if (Animtion == null)
+            {
+
+            }
+            else
+            {
+
+                Animtion.SetBool("Open", true);
+            }
            
         }
-        else
-        {
-           
-            Animtion.SetBool("Open", true);
-        }
+       
+       
        
     }
 
@@ -64,6 +70,7 @@ public class Windown : MonoBehaviour
     }
     public void UnActive()
     {
+       
         gameObject.SetActive(false);
     }
     void StartClose(float time)

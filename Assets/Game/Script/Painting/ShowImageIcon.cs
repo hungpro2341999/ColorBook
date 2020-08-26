@@ -134,7 +134,7 @@ public class ShowImageIcon : MonoBehaviour
 
     public void OpenGameWindow()
     {
-        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
+        GameManager.Ins.OpenLoading();
         Invoke("StartLoadingPaint", 1);
     
      

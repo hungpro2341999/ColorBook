@@ -55,26 +55,27 @@ public class CompleteWindown :Windown
 
     public void SaveToCompleted()
     {
-        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
-        Invoke("StartSaveToCompleted", 0.5f);
+        GameManager.Ins.TrsLoading01.gameObject.SetActive(true);
+        Invoke("StartSaveToCompleted", 0.8f);
 
 
     }
 
     public void StartSaveToCompleted()
     {
-        StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToCompleted(); }));
+        StartCoroutine(GameManager.Ins.StartLoading01(() => { }, () => { CtrlPainting.Ins.Paint.SaveToCompleted(); }));
     }
     public void SaveToShared()
     {
-        GameManager.Ins.TrsLoading.gameObject.SetActive(true);
-        Invoke("StartSaveToShared", 0.5f);
+        GameManager.Ins.TrsLoading01.gameObject.SetActive(true);
+
+        Invoke("StartSaveToShared", 0.8f);
 
     }
 
     public void StartSaveToShared()
     {
-        StartCoroutine(GameManager.Ins.StartLoading(() => { }, () => { CtrlPainting.Ins.Paint.SaveToShared(); }));
+        StartCoroutine(GameManager.Ins.StartLoading01(() => { }, () => { CtrlPainting.Ins.Paint.SaveToShared(); }));
     }
     public void Continue()
     {
