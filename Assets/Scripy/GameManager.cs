@@ -173,14 +173,16 @@ public class GameManager : MonoBehaviour
     {
 
         isLoading = true;
+        Loading = true;
+        Debug.Log("Loading");
         ActionLoading();
 
-        Loading = true;
+      
 
 
    
       
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         if (ActionEnd != null)
         {
             ActionEnd();

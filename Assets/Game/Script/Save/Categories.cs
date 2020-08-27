@@ -204,21 +204,32 @@ public class Categories : MonoBehaviour
     }
     public void ShowAll()
     {
+        GameManager.Ins.TrsLoading01.gameObject.SetActive(true);
 
-        GameManager.Ins.OpenWindown(TypeWindown.SellAll);
-        var win = GameManager.Ins.GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
-        win.ShowAll(nameCategories);
+       
+
+     
+      
     
-//Invoke("StartShowAll1",1);
+        Invoke("StartShowAll1",1);
      
 
         
     }
+
+
     public void StartShowAll1()
     {
-       
-     
-       GameManager.Ins.StartLoading01(() => { GameManager.Ins.OpenWindown(TypeWindown.SellAll); },null);
+        Debug.Log("");
+     StartCoroutine(GameManager.Ins.StartLoading01(() => { GameManager.Ins.OpenWindown(TypeWindown.SellAll); }, () => {
+
+            Debug.Log("Init");
+         
+            var win = GameManager.Ins.GetWindown(TypeWindown.SellAll).GetComponent<WindownSeeAll>();
+            win.ShowAll(nameCategories);
+        }));
+
+
     }
 
   

@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class ShowImageIcon : MonoBehaviour
+public class ShowImageIcon : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
 {
     public string nameCategories;
     public bool Especial;
@@ -20,11 +20,15 @@ public class ShowImageIcon : MonoBehaviour
     public float time;
     public ScrollRect Scroll;
     public bool isScroll;
+    public Transform SelectAnim;
+    public Transform posPointDown;
+    public Transform transPos;
+    public Transform posInit;
     
     private void Awake()
     {
-
-
+      
+    
 
 
 
@@ -33,6 +37,8 @@ public class ShowImageIcon : MonoBehaviour
    
         Button button = GetComponent<Button>();
         button.onClick.AddListener(OpenGameWindow);
+        if(SelectAnim!=null)
+        SelectAnim.gameObject.SetActive(false);
     }
   
 
@@ -144,6 +150,7 @@ public class ShowImageIcon : MonoBehaviour
 
     public void StartLoadingPaint()
     {
+        SelectAnim.gameObject.SetActive(false);
         transform.parent.gameObject.SetActive(true);
         GameManager.Ins.GetHome().gameObject.SetActive(true);
 
@@ -175,7 +182,18 @@ public class ShowImageIcon : MonoBehaviour
        
     }
 
-    
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        SelectAnim.gameObject.SetActive(true);
+        posPointDown.transform.position = eventData.position;
+        transPos.transform.position = posInit.position;
 
-    
+        
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        SelectAnim.gameObject.SetActive(false);
+      
+    }
 }

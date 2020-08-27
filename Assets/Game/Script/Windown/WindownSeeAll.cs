@@ -65,4 +65,16 @@ public class WindownSeeAll : Windown
        
             
     }
+    public void StartBacKToHome()
+    {
+        GameManager.Ins.TrsLoading01.gameObject.SetActive(true);
+        Invoke("BackToHome", 1f);
+    }
+    public void BackToHome()
+    {
+
+        StartCoroutine(GameManager.Ins.StartLoading01(() => { GameManager.Ins.CloseSingleWindown(TypeWindown.SellAll); }, () => { GameManager.Ins.OpenSingleWindown(TypeWindown.Home); }));
+    }
+
+    
 }

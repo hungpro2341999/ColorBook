@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class GamePlayWindown : Windown
 {
+    public static int PlayCount = 0;
     public TabCtrl CtrlTab;
     public bool ShowContinue;
     public float TimeShow;
     public Transform TapToContinue;
     public float time;
+ 
     private void Update()
     {
         if(Input.GetMouseButtonDown(0))
@@ -48,6 +50,11 @@ public class GamePlayWindown : Windown
 
     public void BackToHome()
     {
+        PlayCount++;
+        if(PlayCount%3==0)
+        {
+           // ManagerAds.Ins.ShowInterstitial();
+        }
         CtrlPainting.Ins.Paint.SaveImg();
         GameManager.Ins.OpenLoading();
         Invoke("StartBackHome",1);
@@ -81,5 +88,15 @@ public class GamePlayWindown : Windown
         {
             CtrlPainting.Ins.CacheToPaint.Paint.LoadPaint();
         }
+    }
+    public void StartMoveCompleteWindown()
+    {
+        GameManager.Ins.TrsLoading01.gameObject.SetActive(true);
+        Invoke("MoveToCompleteWindown",1);
+    }
+    public void MoveToCompleteWindown()
+    {
+      
+      StartCoroutine(GameManager.Ins.StartLoading01(() => { CtrlTab.SwitchTab(2); }, () => { GameManager.Ins.OpenSingleWindown(TypeWindown.Completed); }));
     }
 }

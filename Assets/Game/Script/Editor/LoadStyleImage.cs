@@ -583,9 +583,11 @@ public class LoadStyleImage : Editor
 
             var Asset = GameHelper.GetAllAssetAtPath<ColoringPageConfig>(null, "Assets/Resources/ColorPainting/Mystic AnimalsAsset");
 
-
+        
             for (int i = 0; i < Asset.Count; i++)
             {
+                Debug.Log(i);
+             
                 Asset[i].UniqueId = Images[i].name;
 
                 Asset[i].outlineTexture = Images[i].texture;
