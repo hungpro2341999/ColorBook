@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 public class ChangeTab : MonoBehaviour
 {
     public TabCtrl tabCtrl;
+    public HorizontalScrollSnap Scroll;
     public int tabCurr = -1;
     public Transform[] trans;
     public Transform[] trans1;
@@ -17,9 +19,9 @@ public class ChangeTab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(tabCurr!=(tabCtrl.index-1))
+        if(tabCurr!=(Scroll._currentPage))
         {
-            tabCurr = tabCtrl.index-1;
+            tabCurr = Scroll._currentPage;
             ShowSelect(tabCurr);
 
         }

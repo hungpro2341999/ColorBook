@@ -48,21 +48,21 @@ public class TabCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        float offset = -offsetChange;
-        for(int i=0;i<Tabs.Count;i++)
-        {
-            Vector3 pos = Tabs[i].transform.localPosition;
-            pos.x = -720 + (offsetChange * i);
-       //     Debug.Log(offsetChange * i);
-            Tabs[i].transform.localPosition = pos;
-        }
-        SwitchTab(index);
+       // float offset = -offsetChange;
+       // for(int i=0;i<Tabs.Count;i++)
+       // {
+       //     Vector3 pos = Tabs[i].transform.localPosition;
+       //     pos.x = -720 + (offsetChange * i);
+       ////     Debug.Log(offsetChange * i);
+       //     Tabs[i].transform.localPosition = pos;
+       // }
+       // SwitchTab(index);
     }
 
     // Update is called once per frame
     void Update()
     {
-        MoveTo();
+      //  MoveTo();
     }
 
     public void SwitchTab(int tab)
