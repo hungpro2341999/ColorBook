@@ -16,6 +16,7 @@ public class TabCatogories : Tab
     public Transform Top;
     public Transform Bottom;
     public ScrollRect ScrollRect;
+    public Transform HorizontalDash;
     // Start is called before the first frame update
     public void Init()
     {
@@ -48,15 +49,35 @@ public class TabCatogories : Tab
 
     private void Update()
     {
-        if (Vector3.SqrMagnitude(ScrollRect.velocity) <= 0.01f)
-            return;
-        foreach(var categories in ListCategories)
+        if (Vector3.SqrMagnitude(ScrollRect.velocity) >= 0.01f)
         {
-            if (categories == null)
-                continue;
-            var visible = categories.isVisible();
-            categories.Visible.gameObject.SetActive(visible);
+            foreach (var categories in ListCategories)
+            {
+                if (categories == null)
+                    continue;
+                var visible = categories.isVisible();
+                categories.Visible.gameObject.SetActive(visible);
+                if (visible)
+                {
+                    categories.SelectHorizontal();
+                }
+
+
+            }
         }
+        if(GameManager.Ins.check)
+        {
+           if(GameManager.Ins.isHorizontal)
+            {
+                HorizontalDash.GetComponent<Image>().raycastTarget = false;
+            }
+            else
+            {
+                HorizontalDash.GetComponent<Image>().raycastTarget = true;
+            }
+
+        }
+       
     }
 
     // public void 

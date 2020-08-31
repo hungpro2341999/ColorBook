@@ -21,11 +21,12 @@ public class Categories : MonoBehaviour
     public bool isInstace = false;
     public Transform parent;
     public int index;
+  
 
     // Start is called before the first frame update
     private void Start()
     {
-       
+      
       
         Rect = GetComponent<RectTransform>();
     }
@@ -40,6 +41,11 @@ public class Categories : MonoBehaviour
     public void OnEndDrag()
     {
         isScroll = false;
+    }
+
+    public void UpdateChange()
+    {
+       
     }
     public void Init()
     {
@@ -245,18 +251,33 @@ public class Categories : MonoBehaviour
         for (int i =0; i< ColorPageConfig.Length;i++)
         {
 
-                ColorPageConfig[i].Check();
+
+            if (ColorPageConfig[i].Check())
+            {
+             //   UpdateChange();
+               
             }
+        }
+
+
                
            
           
         
     }
+    public void SelectHorizontal()
+    {
 
+     
+          
+
+       
+    }
     public bool isVisible()
     {
         if(TabCatogories.TopPos>=Rect.position.y && TabCatogories.BottomPos<=Rect.position.y)
         {
+
             return true;
         }
 

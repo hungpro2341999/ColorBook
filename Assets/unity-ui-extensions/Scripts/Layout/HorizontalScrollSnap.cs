@@ -9,8 +9,9 @@ namespace UnityEngine.UI.Extensions
 
     [RequireComponent(typeof(ScrollRect))]
     [AddComponentMenu("Layout/Extensions/Horizontal Scroll Snap")]
-    public class HorizontalScrollSnap : ScrollSnapBase, IEndDragHandler
+    public class HorizontalScrollSnap : ScrollSnapBase, IEndDragHandler,IBeginDragHandler
     {
+        public TabCtrl tabCtr;
         void Start()
         {
             _isVertical = false;
@@ -20,7 +21,7 @@ namespace UnityEngine.UI.Extensions
             UpdateLayout();
         }
 
-        void Update()
+        void FixedUpdate()
         {
             if (!_lerp && _scroll_rect.velocity == Vector2.zero)
             {
@@ -51,6 +52,8 @@ namespace UnityEngine.UI.Extensions
             {
                 if (_scroll_rect.velocity.x > 0.01 || _scroll_rect.velocity.x < -0.01)
                 {
+                 
+                   
                     //if the pointer is released and is moving slower than the threshold, then just land on a page
                     if (IsRectMovingSlowerThanThreshold(0))
                     {

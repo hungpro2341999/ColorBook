@@ -19,6 +19,7 @@ public class AnimSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(gameObject.name);
         if(indexCurr != TabCtr.index)
         {
             if (!TriggerStart)

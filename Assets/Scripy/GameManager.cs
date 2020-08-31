@@ -19,7 +19,11 @@ public class GameManager : MonoBehaviour
     public Transform TrsLoading;
     public Transform TrsLoading01;
     public Transform TrsConnectInternet;
-
+    public static Vector3 directMouse;
+    private Vector3 posInit;
+    public bool press;
+    public bool check;
+    public  bool isHorizontal; 
 
     private void Awake()
     {
@@ -35,6 +39,8 @@ public class GameManager : MonoBehaviour
      
         //  PlayerPrefs.DeleteAll();
         Ctrl.Initialize();
+        Windowns[4].gameObject.SetActive(true);
+
         GameManager.Ins.OpenWindown(TypeWindown.Loading);
     }
     private void Start()
@@ -50,6 +56,44 @@ public class GameManager : MonoBehaviour
             {
                 PlayerPrefs.DeleteAll();
             }
+        if (Input.GetMouseButtonDown(0))
+        {
+            press = true;
+            posInit = Input.mousePosition;
+            check = false;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            press = false;
+            check = false;
+
+        }
+        if (press)
+        {
+            directMouse = Vector3.Normalize(Input.mousePosition - posInit);
+            float angle = Vector3.Angle(directMouse, new Vector3(0, 1, 0));
+
+            if (angle != 0)
+            {
+                if (!check)
+                {
+                    check = true;
+                    if ((0 <= angle && angle <= 45) || (135 <= angle && angle <= 180))
+                    {
+                        isHorizontal = false;
+                    }
+                    else
+                    {
+                        isHorizontal = true;
+                    }
+                }
+              
+            }
+           
+        }
+      
+
         bool connect = (Application.internetReachability == NetworkReachability.NotReachable);
         if(connect)
         {

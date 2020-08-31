@@ -77,7 +77,7 @@ public class ShowImageIcon : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
     }
     
 
-    public  void Check()
+    public  bool Check()
     {
      
           
@@ -89,6 +89,8 @@ public class ShowImageIcon : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
          //   Debug.Log("Show");
             //  //  Anim.SetBool("Load1", true);
                 Visible();
+
+           
             //    time += Time.deltaTime;
             //    if(time>2f)
             //    {
@@ -101,10 +103,11 @@ public class ShowImageIcon : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
             //    time = 0;
             UnVisible();
             }
-      
-      
-      
-    
+
+
+        return Show;
+
+
 
 
     }
